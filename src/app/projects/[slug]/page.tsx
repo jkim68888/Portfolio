@@ -9,6 +9,10 @@ export async function generateStaticParams() {
   return projects.map(({ slug }) => ({ slug }));
 }
 
+// 상세 페이지는 모두 빌드 때 정적으로 만들어지므로 Suspense 자리표시 없이 한 번에 보낸다.
+// Suspense로 스트리밍하면 없는 프로젝트 주소도 200으로 응답하게 되어, 404를 지키기 위해 이 방식을 쓴다.
+export const instant = false;
+
 export async function generateMetadata({ params }: PageProps<"/projects/[slug]">): Promise<Metadata> {
   const { slug } = await params;
   const project = await getProject(slug);
