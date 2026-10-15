@@ -1,0 +1,327 @@
+---
+title: "피카로카"
+slug: "picaloca"
+order: 2
+category: "company"
+company: "(주)피카로카"
+period: ""
+tagline: "지도형 SNS"
+summary: "지도에서 게시물을 볼 수 있고, 게시물의 위치를 네비게이션으로 알려주는 “지도형 SNS” 어플리케이션"
+stack: ["RxSwift","UIKit"]
+thumbnail: ""
+links: []
+notionId: "27633aa8-a192-8172-b262-c06168c1ddfd"
+# 아래는 챗봇 답변용 정보 (화면에는 노출하지 않음)
+team: ""
+myRole: ""
+interviewQA: []
+---
+
+### 📱 지도형 SNS
+
+지도에서 게시물을 볼 수 있고, 게시물의 위치를 네비게이션으로 알려주는 “지도형 SNS” 어플리케이션
+
+### 🛠️ 사용 기술
+
+- UIkit, RxSwift 
+- Clean Architecture , MVVM Design Pattern
+- AVKit, PHAsset, APNs, CoreLocation, Localizing
+- Alamofire, Mantis, AppsFlyer OneLink
+- 소셜 로그인 SDK 
+  - Kakao Login SDK
+  - Facebook Login SDK
+  - Google Login SDK
+  - Naver Login SDK
+  - Apple Login SDK
+- 지도 SDK
+  - Naver Map SDK
+  - Google Map SDK
+
+### 👩‍💻 개발 사항
+
+- 네이버 및 구글 지도 SDK 연동
+- 길찾기 기능 (Tmap, 카카오맵, 애플맵, 네이버지도)
+- 이미지 & 동영상 편집/업로드 기능
+- 게시물 & 프로필 공유하기 기능
+- 장소 위치 검색 기능
+- 소셜 로그인, 회원가입, 회원 탈퇴 기능
+- 푸시알림 기능
+- 다국어 로컬라이징 (한국어, 중국어, 일본어, 영어)
+- 게시물 & 프로필 신고/비공개/차단 기능
+
+### 💡 프로젝트 회고
+
+#### 리팩토링 작업 (Swift5, MVC 패턴 → RxSwift, 클린아키텍쳐)
+
+> 작업 계기
+> - **초기 개발 상황**
+>   - 입사 초기, 빠른 앱 출시를 위해 **MVC 패턴**을 사용해 개발
+>   - 기능 구현은 빠르게 가능했지만, 구조적 한계가 존재함
+> - **문제점 인식**
+>   - 화면과 기능이 복잡해지면서 **ViewController가 비대해지고**, **뷰 관련 코드와 비즈니스 로직이 혼재**
+>   - 유지보수 및 기능 확장 시 불편함이 커짐
+>   - 이에 따라 **비즈니스 로직의 분리 필요성**을 느껴 리팩토링 결정
+
+> 리팩토링 진행 사항
+> - 기존: **Swift 5 + MVC**
+> - 리팩토링 후: **RxSwift + MVVM + Clean Architecture**
+
+> 리팩토링 전후 아키텍쳐 구조 비교
+>
+> | 구분 | 리팩토링 전 (MVC) | 리팩토링 후 (Clean Architecture + MVVM + RxSwift) |
+> | --- | --- | --- |
+> | **구성** | ViewController, Model, View | View, ViewModel, UseCase, Repository, Entity, DTO |
+> | **특징** | ViewController에 모든 로직 집중 | 계층 간 역할 분리, 단방향 흐름 |
+> | **문제점** | 유지보수 어려움, 테스트 어려움 | 테스트 용이, 변경에 유연 |
+>
+
+> 리팩토링 효과
+> - **관심사의 분리**
+>   → View와 비즈니스 로직을 명확히 분리하여 **코드 가독성** 및 **유지보수성 향상**
+> - **비동기 처리의 간결화**
+>   → `RxSwift` 도입으로 기존의 Delegate나 Callback 대비 **더 직관적이고 선언적인 방식으로 비동기 처리 가능**
+> - **확장성 향상**
+>   → 각 계층별 책임이 명확해져 **신규 기능 추가 시 영향 범위 최소화**
+
+#### 네이버맵 → 구글맵 변경
+
+> 변경 계기
+>
+> | 구분 | 내용 |
+> | --- | --- |
+> | **v1 버전** | 한국 내 서비스 전용으로 **네이버 지도 SDK** 사용 |
+> | **확장 이슈** | v2 버전부터 **글로벌 서비스 확장 필요** |
+> | **문제점** | 네이버 지도 SDK는 공식적으로 **해외 지원 불가** |
+> | **결정** | 글로벌 커버리지를 보장하는 **Google Maps SDK**로 교체 결정 |
+>
+
+> 진행 내용
+> - 지도 표시, 마커, 클러스터링, 사용자 위치 등 기능들을 새 SDK 기준으로 재구현
+
+> 이슈 정리
+> - 커스터마이징 제약
+>   - Naver는 마커 이미지, 오버레이, 뷰 UI 커스터마이징에 유연하나, Google Maps는 커스터마이징에 어려움을 겪음.
+>   - ex. 마커 위에 뷰 직접 올리는 과정
+> ```swift
+> // Naver Map SDK
+let marker = NMFMarker()
+marker.iconView = myCustomView  // UIView를 그대로 적용 가능
+
+// Google Maps SDK
+extension ViewController: GMUClusterRendererDelegate {
+    func renderer(_ renderer: GMUClusterRenderer, 
+							    markerFor object: Any) -> GMSMarker? {
+		// GMUClusterRendererDelegate 를 상속받아 
+		// renderer 함수에서 `마커`와 `클러스터마커`에 
+		// UIImageView를 생성하여 position을 세팅해줌.					    
+}
+> ```
+
+#### 마커 클러스터링
+
+> 작업 계기
+>
+> | 시점 | 설명 |
+> | --- | --- |
+> | **서비스 초반** | 게시물 수가 적어 모든 게시물을 개별 마커로 표시해도 성능 문제 없음 |
+> | **서비스 성장 후** | 지도에 수천 개의 마커가 동시에 랜더링되면서 성능 저하 발생 → 지도 스크롤/줌 시 버벅임, 마커 이미지 깜빡임, 렌더링 지연 등 UX 저하 |
+>
+
+> 작업 내용
+> 1. 클러스터링 라이브러리 도입
+>   - Google Maps SDK의 `GMUClusterManager` 활용
+>   - 좌표 기반으로 자동으로 마커를 그룹화하고 줌 레벨에 따라 마커 수를 조절함
+> 2. 클러스터 마커 대표 이미지 **커스터마이징**
+>   - 단순한 숫자 버블이 아닌, **클러스터에 포함된 게시물 중 대표 이미지를 동적으로 설정**
+> ```swift
+> class CustomClusterRenderer: GMUDefaultClusterRenderer {
+    override func renderer(_ renderer: GMUClusterRenderer, 
+											    willRenderMarker marker: GMSMarker) {
+        if let cluster = marker.userData as? GMUCluster {
+            // cluster.items 중 하나를 대표 이미지로 선택하여 마커에 반영
+        }
+    }
+}
+> ```
+
+> 효과
+> 마커 수 감소로 지도 움직임이 **부드럽고 자연스러워짐**
+
+#### 지도에서 게시물 조회 API 요청 타이밍 최적화
+
+> 작업 계기
+>
+> | 문제 | 설명 |
+> | --- | --- |
+> | 과도한 API 요청 발생 | 사용자가 지도를 이동하거나 확대/축소할 때마다 반복적으로 게시물 조회 API가 호출됨 |
+> | 서버 부하 우려 | 잦은 호출로 인해 **트래픽 증가** 및 **불필요한 데이터 조회** 발생 → 백엔드 팀에서 개선 요청 |
+> | UX 문제 | 연속된 지도 이동 시 게시물 정보가 계속 깜빡이며 불안정한 UI 경험 발생 |
+>
+
+> 작업 내용
+> API 호출 조건 명확화
+> - 기존에는 `mapView(_:didChange:)` 등 **지도 상태 변화가 감지될 때마다 즉시 요청**
+> - 개선 후에는 **다음 조건에서만 API 요청**
+>   - **같은 cameraPosition에서는 줌 아웃 할 때만**
+>   - **cameraPosition이 달라졌을 경우**
+
+#### 이미지 최적화 작업
+
+> 작업 계기
+> 서비스에 컨텐츠가 많아지면서 다음과 같은 문제가 발생함
+> - **앱 전체 로딩 속도 저하**
+> - **게시물 목록, 상세 페이지, 지도 마커 썸네일** 등에서 **렌더링 지연**
+> - 사용자 네트워크 상태에 따라 **이미지 로딩 실패 or 느림 현상** 발생
+
+> 작업 내용
+> 1. `Kingfisher` 라이브러리 도입
+>   - **비동기 이미지 로딩** 지원
+>   - **메모리 + 디스크 캐싱 자동 처리**
+>     - 동일 이미지 로딩 시 **불필요한 네트워크 요청 제거**
+>     - 앱 재실행 후에도 캐시 이미지 재사용 가능
+>   - 로딩 중에는 **플레이스홀더 이미지 표시**로 UX 개선
+> 2. 서버 업로드 시점에서 이미지 리사이징 & 압축
+>   - 이미지 업로드 시 사용자가 선택한 이미지를 리사이징하여 전송
+>   - **JPEG 압축 품질 설정**(`compressionQuality: 0.8`)로 용량 절감
+>   - 클라이언트에서 불필요한 고해상도 업로드 방지
+> 3. 서버 이미지 타입 분리 제공 (Thumbnail / Middle / Origin)
+>   - 클라이언트에서는 용도에 맞게 요청하여 **렌더링 성능 최적화 + 트래픽 절감**
+
+#### 멀티파트 폼 데이터 전송
+
+> `multipart/form-data` 방식 채택 계기
+> - 게시물 수정/등록 기능에서 `텍스트, 이미지, 동영상, 위경도` 등의 **복합 데이터를 함께 전송**해야 하는 요구사항 발생
+
+> 작업 내용
+> - `Alamofire`의 `.upload(multipartFormData:)` 사용
+>   - Swift의 `URLSession`보다 직관적이고 유연한 멀티파트 전송 기능 제공
+>   - 다음과 같은 데이터를 하나의 요청으로 함께 전송:
+>     - 텍스트 (`content`, `keywords`)
+>     - JSON 배열 (`images`, `videos`, `deletedImages`, `deletedVideos`)
+>       - id, mediaType, orderNumber, 위경도, time 등의 정보가 담긴 객체
+>     - 실제 파일 (이미지, 동영상)
+
+#### 다국어 로컬라이징
+
+> `Localizable.strings` 파일 생성 및 언어 추가
+> 중국어, 영어, 일본어, 한국어 파일 각각 생성 후 다국어 번역 적용
+
+> 문자열 하드코딩 제거 및 키 분리
+> 기존 코드에 직접 입력되어 있던 문자열을 `NSLocalizedString`을 통해 키-값 구조로 변경
+
+> 공통 `String` Extension 정의
+> 반복되는 `NSLocalizedString` 호출을 줄이기 위해 `String` 확장 구현
+
+> 포맷팅 문자열 처리
+> 사용자 이름 등 동적 텍스트가 필요한 경우 `String(format:)` 방식으로 처리
+> ```swift
+> let welcome = "welcome_user".localized(with: userName)
+> ```
+> ```plain text
+> // en.lproj
+"welcome_user" = "Welcome, %@!";
+
+// ko.lproj
+"welcome_user" = "%@님, 환영합니다!";
+> ```
+
+#### 동영상 편집 기능
+
+> AVFoundation 기반 트리밍 기능 구현
+> `AVAsset`, `AVMutableComposition`, `AVAssetExportSession`을 활용하여 특정 시간 범위로 동영상 자르기 기능 구현
+
+> 동영상 프리뷰 기능
+> - 사용자가 자르기 전, 후의 영상 범위를 시각적으로 확인할 수 있도록 **동영상 프리뷰 UI**를 제공
+> - 슬라이더를 통해 사용자가 직접 시작 시점과 종료 시점을 조절 가능하도록 구현
+
+#### RxSwift의 Observable 합성하기
+
+> 유저 인증이 필요한 API 조회
+> - 유효한 `accessToken` 으로 API를 조회 할 수 있도록 API 조회 트리거와 accessToken 트리거를 `combineLatest`를 활용해 두 Observable을 병합
+
+#### 에러 핸들링
+
+> 커스텀 에러 정의
+> - HTTP 상태 코드를 기반으로 서버 에러를 명확히 분리
+> - 추후 로직에서 분기 처리가 용이해짐
+> ```swift
+> enum ServerError: String, Error {
+    case badRequest = "400"
+    case unAuthorized = "401"
+    case networkError = "500"
+}
+> ```
+
+> Result 타입으로 성공/실패 명확화
+> - 에러를 `onError`로만 넘기지 않고 `Result.failure`를 통해 **정제된 형태로 전달**
+> - 통신 자체 실패 (`onError`) 와 응답 실패 (`failure(...)`)를 분리하여 **에러 유형에 따른 처리** 가능
+> ```swift
+> Observable<Result<BaseResponse<UserProfileData>, ServerError>>
+> ```
+
+> 키 포인트
+> - `onNext` 에서 서버 응답 에러에 따른 로직 구현
+> - `onError`는 Alamofire 자체 에러 (네트워크 연결 실패 등)에만 사용
+
+> 효과
+> 예외 발생 시 앱 흐름 단절 가능성 개선 가능
+> - 401 에러 발생 시 자동 재인증 처리
+> - 에러 타입에 따른 다양한 Alert 처리
+
+#### 성과
+
+> 성과
+> - 해외 서비스를 위한 v2를 출시하면서, 지도 변경(네이버지도 → 구글맵) 및 다국어 지원(로컬라이징 작업)과 더불어 **전반적인 기능 개선 작업** 진행
+> - v2 출시 후, 앱 다운로드 수와 회원수가 급격히 증가 하였으며, 해외 유저도 많이 늘어남.
+> **v2 출시 전 **(6개월간의 앱 다운로드 수)
+> <!-- IMAGE: 스크린샷 2023-12-24 오후 4.12.54.png (block 27633aa8-a192-819b-8df2-ccabc1658ee3) -->
+> **v2 출시 후 **(6개월간의 앱 다운로드 수)
+> <!-- IMAGE: 스크린샷 2023-12-24 오후 4.19.12.png (block 27633aa8-a192-8101-8f11-e80fa369920b) -->
+
+---
+
+### 📌 주요 기능
+
+<!-- IMAGE: 로그인 화면 (안드로이드) - 수정.jpg (block 27633aa8-a192-8185-9243-df6816d23c7b) -->
+- 소셜 로그인
+- 이메일 회원가입/로그인
+
+<!-- IMAGE: IMG_0439.jpg (block 27633aa8-a192-8138-bfa2-cf710ef42297) -->
+- 지도에서 게시물 보기
+- 키워드 검색 / 인기 키워드 게시물 필터링
+- 현위치로 이동
+<!-- IMAGE: Screen.png (block 27633aa8-a192-81ba-9f3d-c69dc694b01f) -->
+- 게시물 상세 보기
+- 공유
+- 길찾기
+- 좋아요, 댓글
+- 신고, 비공개 처리
+<!-- IMAGE: 남의 계정에서 팔로잉.png (block 27633aa8-a192-8194-87e5-d425e3281b0c) -->
+- 유저 팔로우 기능
+<!-- IMAGE: IMG_4440 1.png (block 27633aa8-a192-811e-ae42-e2a3c0ab4185) -->
+- 이벤트 팝업
+
+<!-- IMAGE: IMG_4437.png (block 27633aa8-a192-818a-8bdb-cd2a659eb446) -->
+- 프로필 화면
+- 유저 게시물 리스트/지도로 보기
+- 유저 차단, 신고, 팔로우 기능
+- 프로필 이미지 업로드 및 소개 작성/수정 기능
+<!-- IMAGE: IMG_4438 1.png (block 27633aa8-a192-8149-99e7-ecdbcec45a8f) -->
+- 푸시 알림 기능
+
+<!-- IMAGE: IMG_4435.png (block 27633aa8-a192-812b-b41e-fdd65e9126e4) -->
+- 기간별 게시물 검색 기능
+<!-- IMAGE: IMG_0118.png (block 27633aa8-a192-81cc-9ca2-f8d03853a6c9) -->
+- 게시물 업로드
+- 갤러리, 카메라, 동영상 카메라 연동
+- 해시태그 기능
+- 여러장 이미지 및 동영상 업로드
+<!-- IMAGE: IMG_0124.png (block 27633aa8-a192-8117-a814-fb5fb924087b) -->
+- 이미지 및 동영상 리스트 편집 기능
+- 이미지에서 위치, 시간 메타데이터 추출
+- 위치, 시간 변경
+- 이미지 삭제
+<!-- IMAGE: IMG_0125.png (block 27633aa8-a192-81dc-95e2-f4f057c1a4f8) -->
+- 이미지 편집 기능
+<!-- IMAGE: IMG_0132.png (block 27633aa8-a192-81d0-850c-f6f7449c977a) -->
+- 동영상 길이 편집 기능 (15초 제한)

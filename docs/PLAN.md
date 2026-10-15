@@ -101,7 +101,7 @@
 | --- | --- | --- |
 | 프레임워크 | Next.js (App Router) + TypeScript | SSG로 SEO/OG 해결, Route Handler로 챗봇 서버 구현 |
 | 스타일 | Tailwind CSS | 기존 사용 경험 |
-| 콘텐츠 | MDX + frontmatter (zod로 검증) | 화면과 챗봇이 같은 원본을 사용 |
+| 콘텐츠 | 마크다운 + frontmatter (gray-matter, zod로 검증), `react-markdown`으로 렌더링 | 화면과 챗봇이 같은 원본을 사용. 본문에 JSX가 없어 MDX 대신 일반 마크다운 사용 |
 | 로컬 LLM | Ollama + 한국어 가능 7~8B 오픈 모델 | M1 Pro 16GB에서 구동 가능한 크기 |
 | 외부 공개 | Tailscale Funnel + 인증 프록시 | 무료, 고정 주소, 도메인 불필요 |
 | 호스팅 API | Claude Haiku 5.5 (`@anthropic-ai/sdk`) | 저렴하고 빠름, 공식 SDK로 스트리밍 |
@@ -112,7 +112,7 @@
 
 | 날짜 | 목표 | 완료 기준 |
 | --- | --- | --- |
-| D1 · 10/15 (목) | 셋업 + 콘텐츠 추출 + Ollama 설치 | Next.js 프로젝트 생성, Vercel 연결, 10개 MDX 초안, 모델 후보 다운로드 |
+| D1 · 10/15 (목) | 셋업 + 콘텐츠 추출 + Ollama 설치 | Next.js 프로젝트 생성, Vercel 연결, 10개 마크다운 초안, 모델 후보 다운로드 |
 | D2 · 10/16 (금) | 콘텐츠 보강 + 로컬 모델 선정 | 챗봇용 필드·예상 질문 작성, 모델 2~3개 비교 후 확정 |
 | D3 · 10/17 (토) | 포트폴리오 UI ① | 레이아웃, 홈(소개), 프로젝트 목록 |
 | D4 · 10/18 (일) | 포트폴리오 UI ② + **1차 배포** | 프로젝트 상세, 반응형, SEO/OG → 챗봇 없이도 공개 가능한 상태 |
@@ -147,23 +147,23 @@
 - [ ] Vercel 가입, GitHub 저장소 연결
 
 ### Phase 1. 셋업 (D1)
-- [ ] Next.js + TS + Tailwind 초기화
-- [ ] ESLint / Prettier, 경로 alias
-- [ ] 폴더 구조: `app/`, `components/`, `content/projects/`, `lib/`, `local-llm/`(Mac용 프록시·설정)
-- [ ] `.env.example` 작성
+- [x] Next.js 16 + TS + Tailwind 4 초기화
+- [x] ESLint / Prettier, 경로 alias
+- [x] 폴더 구조: `src/app/`, `src/components/`, `src/lib/`, `content/projects/`, `scripts/` (`local-llm/`은 D5에 추가)
+- [x] `.env.example` 작성
   - `ANTHROPIC_API_KEY`
   - `LOCAL_LLM_URL`, `LOCAL_LLM_SECRET`
   - `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN`
 - [ ] Vercel 연결, 프리뷰 배포 확인 (`develop` → 프리뷰, `main` → 프로덕션)
-- [ ] 아바타를 `public/avatar.png`로 이동
+- [x] 아바타를 `public/avatar.png`로 이동
 
 ### Phase 2. 콘텐츠 (D1~D2)
-- [ ] Notion 공개 API로 10개 프로젝트 본문 자동 추출 → MDX 초안 생성 (토글 회고 포함)
-- [ ] 이미지 다운로드·정리 (WebP 변환, `public/projects/<slug>/`)
-- [ ] frontmatter 스키마 정의
+- [x] Notion 공개 API로 10개 프로젝트 본문 자동 추출 → `content/projects/*.md` 생성 (토글 회고·표 포함, `npm run content:export`)
+- [ ] 이미지 정리: Notion이 자동 다운로드를 막음(403) → Notion에서 "내보내기(Markdown & CSV, 하위 페이지 포함)"로 받아서 `public/projects/<slug>/`에 배치 (본문에 `<!-- IMAGE -->` 자리표시 있음)
+- [x] frontmatter 스키마 정의 (`src/lib/projects.ts`, 빌드 시 형식 오류 검출)
   - 화면용: `title`, `slug`, `company`, `period`, `category`(회사 / Swift 사이드 / RN 사이드), `stack`, `summary`, `thumbnail`, `links`
-  - 챗봇용: `keywords`(관련 프로젝트 선택용), `team`, `myRole`, `contributions`, `problemsSolved`, `techDecisions`, `retrospective`
-- [ ] 추출 결과 검수 (누락·깨진 서식)
+  - 챗봇용: `team`, `myRole`, `interviewQA` (개발 사항·회고는 본문에 이미 상세히 있어서 별도 필드 대신 본문을 그대로 사용)
+- [x] 추출 결과 검수 (누락·깨진 서식) → 빌드·렌더링 확인 완료
 - [ ] 프로젝트별 예상 질문 3~5개 + 답변 요지 작성 (**본인 작성**)
 - [ ] 비어 있는 정보 채우기: 기간, 팀 구성, 본인 역할 (**본인 작성**)
 - [ ] 자기소개, 경력 요약, 연락처 데이터
