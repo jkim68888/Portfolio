@@ -8,11 +8,13 @@ period: "2023.03 ~ 2024.05"
 tagline: "예적금 포트폴리오"
 summary: "예적금 상품의 금리 비교와 포트폴리오 만들기를 통한 내 예적금 수익 예측이 가능한 핀테크 어플리케이션"
 stack: ["Swift", "UIKit", "WebView", "React"]
-thumbnail: ""
+thumbnail: "/projects/saving-hanaro/cover.jpg"
+# 프로젝트 목록 카드 오른쪽에 보이는 대표 화면
+preview: "/projects/saving-hanaro/03.jpg"
 links: []
 status: "회사가 폐업하면서 앱이 스토어에서 내려가 현재는 앱 링크가 없음"
 notionId: "27633aa8-a192-8114-a8d1-edc9799b83bd"
-# 아래는 챗봇 답변용 정보 (화면에는 노출하지 않음)
+# team·myRole은 상세 페이지와 챗봇에, interviewQA는 챗봇에만 사용
 team: "iOS 1명(본인), Android 1명, 웹 프론트엔드 1명, 백엔드 1명, CTO 1명"
 myRole: "iOS 전담. React.js로 개발된 웹을 WKWebView로 패키징해 iOS 앱으로 출시하고, 애플 로그인·탈퇴, 웹뷰 JS 브릿지, 웹 쿠키 동기화 같은 네이티브 기능을 구현. React.js 웹 유지보수도 함께 진행"
 interviewQA:
@@ -129,19 +131,19 @@ function handleAppleLogin() {
 
 ### 📌 주요 기능
 
-<!-- IMAGE: UI-A-1.jpg (block 27633aa8-a192-815c-ada7-f821129842cd) -->
+![예적금 상품 리스트 조회](/projects/saving-hanaro/01.jpg)
 - 예적금 상품 리스트 조회
 - 1금융권/2금융권 필터링
 - 예금/적금 필터링
 
-<!-- IMAGE: UI-B-19.jpg (block 27633aa8-a192-8112-acbf-ce1840892b57) -->
+![나의 포트폴리오 만기 수익 계산](/projects/saving-hanaro/02.jpg)
 - 나의 포트폴리오 만기 수익 계산
-<!-- IMAGE: UI-C-2.jpg (block 27633aa8-a192-81de-966f-c9b39c31fcbf) -->
+![예적금 상품 포트폴리오 만들기](/projects/saving-hanaro/03.jpg)
 - 예적금 상품 포트폴리오 만들기
 - 금융기관/저축기간/저축금액의 조건을 충족하는 예적금 상품 조회
-<!-- IMAGE: UI-D-1.jpg (block 27633aa8-a192-819c-bba7-f25242565e16) -->
+![네이버 뉴스 API 연동](/projects/saving-hanaro/04.jpg)
 - 네이버 뉴스 API 연동
-<!-- IMAGE: UI-D-2.jpg (block 27633aa8-a192-81d5-a3f4-e3d962be1c05) -->
+![유튜브 API 연동](/projects/saving-hanaro/05.jpg)
 - 유튜브 API 연동
-<!-- IMAGE: UI-F-1.jpg (block 27633aa8-a192-8142-ae4f-ccfeb8bf401c) -->
+![소셜 로그인 / 이메일 로그인](/projects/saving-hanaro/06.jpg)
 - 소셜 로그인 / 이메일 로그인

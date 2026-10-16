@@ -8,11 +8,13 @@ period: "2024.04.01 ~ 2024.06.20"
 tagline: "일기와 커뮤니티"
 summary: "나만 볼 수 있는 일기와, 다른 사람들과 함께 게시물을 올려서 볼 수 있는 커뮤니티가 공존하는 어플리케이션"
 stack: ["SwiftUI", "Combine"]
-thumbnail: ""
+thumbnail: "/projects/pipi/cover.jpg"
+# 프로젝트 목록 카드 오른쪽에 보이는 대표 화면
+preview: "/projects/pipi/04.jpg"
 links: [{"label": "GitHub", "url": "https://github.com/team-ppeople"}, {"label": "App Store", "url": "https://apps.apple.com/kr/app/%ED%94%BC%ED%94%BC/id6480352084"}]
 status: ""
 notionId: "27633aa8-a192-8161-bcaf-c384e565950c"
-# 아래는 챗봇 답변용 정보 (화면에는 노출하지 않음)
+# team·myRole은 상세 페이지와 챗봇에, interviewQA는 챗봇에만 사용
 team: "iOS 2명(본인 포함), Android 2명, 백엔드 2명"
 myRole: "직접 기획하고 팀원을 모집한 사이드 프로젝트. 기획, UI/UX 화면 설계와 디자인, iOS 개발(소셜 로그인, CoreData 기반 일기 CRUD, 이미지 크롭), 앱스토어 배포를 담당"
 interviewQA:
@@ -86,27 +88,27 @@ interviewQA:
 
 ### 📌 주요 기능
 
-<!-- IMAGE: IMG_2405 2.jpg (block 27633aa8-a192-81b5-b11e-edb39feab4b4) -->
+![카카오 로그인](/projects/pipi/01.jpg)
 - 카카오 로그인
 - 애플 로그인
 
-<!-- IMAGE: 설정.jpg (block 27633aa8-a192-81e9-ac76-f10c79e73953) -->
+![로그인 여부에 따른 유저 프로필 노출](/projects/pipi/02.jpg)
 - 로그인 여부에 따른 유저 프로필 노출
-<!-- IMAGE: 나의 프로필.jpg (block 27633aa8-a192-812f-992e-e9759ca8cd4c) -->
+![프로필 수정](/projects/pipi/03.jpg)
 - 프로필 수정
 - 나의 게시물 및 좋아요 조회
-<!-- IMAGE: IMG_2401 2.jpg (block 27633aa8-a192-8136-b20e-cb6fc5870365) -->
+![게시물 리스트 보기](/projects/pipi/04.jpg)
 - 게시물 리스트 보기
-<!-- IMAGE: IMG_2402 2.jpg (block 27633aa8-a192-8130-a182-e1918050542c) -->
+![게시물 상세 보기](/projects/pipi/05.jpg)
 - 게시물 상세 보기
-<!-- IMAGE: IMG_2403 2.jpg (block 27633aa8-a192-8160-a067-dcb040c8f057) -->
+![게시물 이미지와 텍스트  업로드](/projects/pipi/06.jpg)
 - 게시물 이미지와 텍스트  업로드
-<!-- IMAGE: IMG_2404 2.jpg (block 27633aa8-a192-8128-ab11-f4505ee05d11) -->
+![이미지 크롭](/projects/pipi/07.jpg)
 - 이미지 크롭
-<!-- IMAGE: image 3013.jpg (block 27633aa8-a192-81e6-bc03-ec150e0c8cff) -->
+![좋아요, 댓글, 삭제 기능](/projects/pipi/08.jpg)
 - 좋아요, 댓글, 삭제 기능
 
 ### 기타 사항
 
 - 직접 앱을 기획하여 UI/UX 화면설계 플로우차트 작성
-  <!-- IMAGE: 240330 - 기획 1.jpg (block 27633aa8-a192-81a9-8ce4-eb9c50cc38a4) -->
+  ![피피 화면 9](/projects/pipi/09.jpg)

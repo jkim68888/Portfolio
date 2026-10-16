@@ -8,11 +8,13 @@ period: "2024.07 ~ 2024.12"
 tagline: "게임 커뮤니티"
 summary: "국내 게임 커뮤니티 인벤의 공식 iOS 앱"
 stack: ["Swift", "UIKit", "WebView"]
-thumbnail: ""
+thumbnail: "/projects/inven/cover.jpg"
+# 프로젝트 목록 카드 오른쪽에 보이는 대표 화면
+preview: "/projects/inven/preview.jpg"
 links: [{"label": "App Store", "url": "https://apps.apple.com/us/app/%EC%9D%B8%EB%B2%A4-inven-%EA%B3%B5%EC%8B%9D/id997288621"}]
 status: ""
 notionId: "27633aa8-a192-815a-9632-d57de69dd0b4"
-# 아래는 챗봇 답변용 정보 (화면에는 노출하지 않음)
+# team·myRole은 상세 페이지와 챗봇에, interviewQA는 챗봇에만 사용
 team: "iOS 1명(본인), Android 1명, 웹 개발자 5명, 웹 퍼블리셔 1명, 디자이너 4명, 기획자 2명"
 myRole: "iOS 전담. 버그 수정과 간단한 기능 추가 후 앱스토어 배포, Firebase Crashlytics 모니터링을 맡아 Crash Free Rate 99.8% 이상을 유지"
 interviewQA:

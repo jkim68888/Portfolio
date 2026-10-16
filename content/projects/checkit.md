@@ -8,10 +8,12 @@ period: "2025.05.24 ~ 2025.06.06"
 tagline: "Todo 앱"
 summary: "날짜 별로 Todo 리스트를 정리할 수 있는 어플리케이션"
 stack: ["React Native","Expo","TypeScript","Context API"]
-thumbnail: ""
+thumbnail: "/projects/checkit/cover.jpg"
+# 프로젝트 목록 카드 오른쪽에 보이는 대표 화면
+preview: "/projects/checkit/01.png"
 links: [{"label":"GitHub","url":"https://github.com/jkim68888/Check-it"},{"label":"App Store","url":"https://apps.apple.com/us/app/%EC%B2%B4%ED%81%AC%EC%9E%87/id6746921529"}]
 notionId: "27633aa8-a192-816d-a55f-dfe131dee390"
-# 아래는 챗봇 답변용 정보 (화면에는 노출하지 않음)
+# team·myRole은 상세 페이지와 챗봇에, interviewQA는 챗봇에만 사용
 team: "1인 개발"
 myRole: "아이디어부터 앱스토어 출시까지 혼자 만든 0→1 프로젝트. 기획, Figma를 이용한 UI 디자인, 앱 개발, EAS Build를 이용한 iOS·Android 빌드 및 배포를 모두 직접 진행. iOS는 앱스토어에 출시했고, Android는 플레이스토어 비공개 테스트 단계로 테스터를 모집 중"
 interviewQA:
@@ -103,15 +105,15 @@ interviewQA:
 
 ### 📌 주요 기능
 
-<!-- IMAGE: IMG_2484.PNG (block 27633aa8-a192-810e-8331-ef9b0446f765) -->
+![완료 체크](/projects/checkit/01.png)
 - 완료 체크
 - 순서 변경
 - 삭제
 
-<!-- IMAGE: IMG_2486.PNG (block 27633aa8-a192-814b-ad02-c1c7edb5a139) -->
+![날짜 선택](/projects/checkit/02.png)
 - 날짜 선택
 - 중요도 선택
-<!-- IMAGE: IMG_2487.PNG (block 27633aa8-a192-81e3-91a4-f1f5452bb6ac) -->
+![날짜 오름차순 정렬](/projects/checkit/03.png)
 - 날짜 오름차순 정렬
-<!-- IMAGE: IMG_2488.PNG (block 27633aa8-a192-81f2-ae5b-e61458ccb1ca) -->
+![과거 데이터는 자동 삭제](/projects/checkit/04.png)
 - 과거 데이터는 자동 삭제

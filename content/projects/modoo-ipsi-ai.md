@@ -8,11 +8,13 @@ period: "2025.12 ~ 2026.10"
 tagline: "AI 모의면접 웹 서비스"
 summary: "생기부 기반 AI 모의면접, 생기부 분석, 학교/학과 탐색 등의 기능을 통해 대학입시 준비를 할 수 있는 웹 플랫폼"
 stack: ["React", "TypeScript", "Vite", "Zustand", "Tailwind"]
-thumbnail: ""
+thumbnail: "/projects/modoo-ipsi-ai/cover-f988a9bf.jpg"
+# 프로젝트 목록 카드 오른쪽에 보이는 대표 화면
+preview: "/projects/modoo-ipsi-ai/09.jpg"
 links: [{"label": "웹사이트", "url": "https://www.modu-ipsi.com/"}]
 status: ""
 notionId: "33133aa8-a192-8061-b574-fdfe6beeefe6"
-# 아래는 챗봇 답변용 정보 (화면에는 노출하지 않음)
+# team·myRole은 상세 페이지와 챗봇에, interviewQA는 챗봇에만 사용
 team: "프론트엔드 1명(본인), 백엔드 1명"
 myRole: "프론트엔드 전담. 영업팀이 가져온 아이디어를 바탕으로 기획을 구체화하고 Figma로 화면을 직접 디자인한 뒤, 로그인·회원가입·마이페이지를 포함한 모든 메뉴의 화면과 기능을 구현하고 S3 + CloudFront 배포까지 담당"
 interviewQA:
@@ -83,32 +85,32 @@ interviewQA:
 
 ### 📌 주요 기능
 
-<!-- IMAGE: 스크린샷 2026-09-22 오후 7.17.20.png (block 3e333aa8-a192-80df-9946-ca45c31af05f) -->
-<!-- IMAGE: 스크린샷 2026-09-22 오후 7.17.33.png (block 3e333aa8-a192-80dd-aa38-fa18fd0d9927) -->
-<!-- IMAGE: 스크린샷 2026-09-22 오후 7.17.43.png (block 3e333aa8-a192-80a2-b1fa-e2d015e87c30) -->
-<!-- IMAGE: 스크린샷 2026-09-22 오후 7.17.48.png (block 3e333aa8-a192-80ed-8cc6-f683f030d558) -->
-<!-- IMAGE: 스크린샷 2026-09-22 오후 7.17.55.png (block 3e333aa8-a192-8002-8ade-c5df359150c8) -->
-<!-- IMAGE: 스크린샷 2026-09-22 오후 7.18.07.png (block 3e333aa8-a192-806c-b733-d1c916d4a2cb) -->
-<!-- IMAGE: 스크린샷 2026-09-22 오후 7.18.19.png (block 3e333aa8-a192-8020-8a1b-f4cba9cdc260) -->
-<!-- IMAGE: 스크린샷 2026-09-22 오후 7.18.26.png (block 3e333aa8-a192-80c5-8865-db7d908a39ff) -->
+![모두의 입시 AI 화면 1](/projects/modoo-ipsi-ai/01.png)
+![모두의 입시 AI 화면 2](/projects/modoo-ipsi-ai/02.png)
+![모두의 입시 AI 화면 3](/projects/modoo-ipsi-ai/03.png)
+![모두의 입시 AI 화면 4](/projects/modoo-ipsi-ai/04.png)
+![모두의 입시 AI 화면 5](/projects/modoo-ipsi-ai/05.png)
+![모두의 입시 AI 화면 6](/projects/modoo-ipsi-ai/06.png)
+![AI 모의면접 및 질답생성 기능](/projects/modoo-ipsi-ai/07.png)
+![AI 모의면접 및 질답생성 기능](/projects/modoo-ipsi-ai/08.png)
 - AI 모의면접 및 질답생성 기능
-<!-- IMAGE: image 233.jpg (block 34633aa8-a192-8025-8402-cf45563b181c) -->
+![진로적성 검사 질문 화면](/projects/modoo-ipsi-ai/09.jpg)
 - 진로적성 검사 질문 화면
 - 질문의 답변에 따라 프론트에서 결과 도출 (트리 형식으로 로직 구현)
 
-<!-- IMAGE: image 234.jpg (block 34633aa8-a192-804c-abd3-f0a6e0846640) -->
+![진로적성 검사 결과 화면](/projects/modoo-ipsi-ai/10.jpg)
 - 진로적성 검사 결과 화면
-<!-- IMAGE: image 235.jpg (block 34633aa8-a192-80ba-b987-c1b803375ee8) -->
+![학교/학과 정보 조회 기능](/projects/modoo-ipsi-ai/11.jpg)
 - 학교/학과 정보 조회 기능
 
-<!-- IMAGE: image 237.jpg (block 34633aa8-a192-805c-a68f-db19ce367bde) -->
+![chart.js 사용하여 차트 구현](/projects/modoo-ipsi-ai/12.png)
 - chart.js 사용하여 차트 구현
-<!-- IMAGE: image 231.jpg (block 34633aa8-a192-8085-8d3c-ca8cd5256987) -->
+![폼 입력 구현](/projects/modoo-ipsi-ai/13.jpg)
 - 폼 입력 구현
 - 파일 업로드 구현
-<!-- IMAGE: image 239.jpg (block 34633aa8-a192-80e7-9b40-d045540664a2) -->
+![10개씩 페이징 처리](/projects/modoo-ipsi-ai/14.jpg)
 - 10개씩 페이징 처리
 - 검색바 구현
-<!-- IMAGE: image 225.jpg (block 34633aa8-a192-804e-9b8a-c1d3303bad51) -->
+![그 외의 로그인/회원가입/마이페이지 구현](/projects/modoo-ipsi-ai/15.jpg)
 - 그 외의 로그인/회원가입/마이페이지 구현
 - 모든 메뉴 화면 및 기능 구현

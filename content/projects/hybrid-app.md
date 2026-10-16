@@ -8,10 +8,12 @@ period: "2026.07.29 ~ 2026.08.08"
 tagline: "웹뷰 기반 하이브리드 앱"
 summary: "네이버 웹을 앱에서 사용할 수 있는 어플리케이션"
 stack: ["React Native","WebView","TypeScript","Context API"]
-thumbnail: ""
+thumbnail: "/projects/hybrid-app/cover.jpg"
+# 프로젝트 목록 카드 오른쪽에 보이는 대표 화면
+preview: "/projects/hybrid-app/preview.jpg"
 links: [{"label":"GitHub","url":"https://github.com/jkim68888/HybridApp"}]
 notionId: "30b33aa8-a192-8079-967c-d7e254099182"
-# 아래는 챗봇 답변용 정보 (화면에는 노출하지 않음)
+# team·myRole은 상세 페이지와 챗봇에, interviewQA는 챗봇에만 사용
 team: "1인 개발"
 myRole: "React Native에서 웹뷰 기반 하이브리드 앱 구조를 익히기 위해 혼자 기획·개발한 학습 프로젝트. 웹뷰 로드와 화면 이동, 쿠키 동기화 로그인, 공유·뒤로가기·Pull To Refresh 같은 네이티브 기능 연동을 직접 구현"
 interviewQA:

@@ -8,11 +8,13 @@ period: "2022.12 ~ 2024.05"
 tagline: "지도형 SNS"
 summary: "지도에서 게시물을 볼 수 있고, 게시물의 위치를 네비게이션으로 알려주는 “지도형 SNS” 어플리케이션"
 stack: ["RxSwift", "UIKit"]
-thumbnail: ""
+thumbnail: "/projects/picaloca/cover.jpg"
+# 프로젝트 목록 카드 오른쪽에 보이는 대표 화면
+preview: "/projects/picaloca/04.jpg"
 links: []
 status: "회사가 폐업하면서 앱이 스토어에서 내려가 현재는 앱 링크가 없음"
 notionId: "27633aa8-a192-8172-b262-c06168c1ddfd"
-# 아래는 챗봇 답변용 정보 (화면에는 노출하지 않음)
+# team·myRole은 상세 페이지와 챗봇에, interviewQA는 챗봇에만 사용
 team: "iOS 1명(본인), Android 1명, 백엔드 1명, CTO 1명"
 myRole: "iOS 전담. Android 앱만 출시된 상태에서 입사해 iOS 앱을 처음부터 개발해 출시했고, 이후 MVC에서 RxSwift·MVVM·Clean Architecture로의 리팩토링과 해외 서비스를 위한 v2(구글맵 전환, 4개 국어 로컬라이징)까지 진행"
 interviewQA:
@@ -279,54 +281,54 @@ extension ViewController: GMUClusterRendererDelegate {
 > - 해외 서비스를 위한 v2를 출시하면서, 지도 변경(네이버지도 → 구글맵) 및 다국어 지원(로컬라이징 작업)과 더불어 **전반적인 기능 개선 작업** 진행
 > - v2 출시 후, 앱 다운로드 수와 회원수가 급격히 증가 하였으며, 해외 유저도 많이 늘어남.
 > **v2 출시 전 **(6개월간의 앱 다운로드 수)
-> <!-- IMAGE: 스크린샷 2023-12-24 오후 4.12.54.png (block 27633aa8-a192-819b-8df2-ccabc1658ee3) -->
+![피카로카 화면 1](/projects/picaloca/01.png)
 > **v2 출시 후 **(6개월간의 앱 다운로드 수)
-> <!-- IMAGE: 스크린샷 2023-12-24 오후 4.19.12.png (block 27633aa8-a192-8101-8f11-e80fa369920b) -->
+![피카로카 화면 2](/projects/picaloca/02.png)
 
 ---
 
 ### 📌 주요 기능
 
-<!-- IMAGE: 로그인 화면 (안드로이드) - 수정.jpg (block 27633aa8-a192-8185-9243-df6816d23c7b) -->
+![소셜 로그인](/projects/picaloca/03.jpg)
 - 소셜 로그인
 - 이메일 회원가입/로그인
 
-<!-- IMAGE: IMG_0439.jpg (block 27633aa8-a192-8138-bfa2-cf710ef42297) -->
+![지도에서 게시물 보기](/projects/picaloca/04.jpg)
 - 지도에서 게시물 보기
 - 키워드 검색 / 인기 키워드 게시물 필터링
 - 현위치로 이동
-<!-- IMAGE: Screen.png (block 27633aa8-a192-81ba-9f3d-c69dc694b01f) -->
+![게시물 상세 보기](/projects/picaloca/05.png)
 - 게시물 상세 보기
 - 공유
 - 길찾기
 - 좋아요, 댓글
 - 신고, 비공개 처리
-<!-- IMAGE: 남의 계정에서 팔로잉.png (block 27633aa8-a192-8194-87e5-d425e3281b0c) -->
+![유저 팔로우 기능](/projects/picaloca/06.png)
 - 유저 팔로우 기능
-<!-- IMAGE: IMG_4440 1.png (block 27633aa8-a192-811e-ae42-e2a3c0ab4185) -->
+![이벤트 팝업](/projects/picaloca/07.png)
 - 이벤트 팝업
 
-<!-- IMAGE: IMG_4437.png (block 27633aa8-a192-818a-8bdb-cd2a659eb446) -->
+![프로필 화면](/projects/picaloca/08.png)
 - 프로필 화면
 - 유저 게시물 리스트/지도로 보기
 - 유저 차단, 신고, 팔로우 기능
 - 프로필 이미지 업로드 및 소개 작성/수정 기능
-<!-- IMAGE: IMG_4438 1.png (block 27633aa8-a192-8149-99e7-ecdbcec45a8f) -->
+![푸시 알림 기능](/projects/picaloca/09.png)
 - 푸시 알림 기능
 
-<!-- IMAGE: IMG_4435.png (block 27633aa8-a192-812b-b41e-fdd65e9126e4) -->
+![기간별 게시물 검색 기능](/projects/picaloca/10.png)
 - 기간별 게시물 검색 기능
-<!-- IMAGE: IMG_0118.png (block 27633aa8-a192-81cc-9ca2-f8d03853a6c9) -->
+![게시물 업로드](/projects/picaloca/11.png)
 - 게시물 업로드
 - 갤러리, 카메라, 동영상 카메라 연동
 - 해시태그 기능
 - 여러장 이미지 및 동영상 업로드
-<!-- IMAGE: IMG_0124.png (block 27633aa8-a192-8117-a814-fb5fb924087b) -->
+![이미지 및 동영상 리스트 편집 기능](/projects/picaloca/12.png)
 - 이미지 및 동영상 리스트 편집 기능
 - 이미지에서 위치, 시간 메타데이터 추출
 - 위치, 시간 변경
 - 이미지 삭제
-<!-- IMAGE: IMG_0125.png (block 27633aa8-a192-81dc-95e2-f4f057c1a4f8) -->
+![이미지 편집 기능](/projects/picaloca/13.png)
 - 이미지 편집 기능
-<!-- IMAGE: IMG_0132.png (block 27633aa8-a192-81d0-850c-f6f7449c977a) -->
+![동영상 길이 편집 기능 (15초 제한)](/projects/picaloca/14.png)
 - 동영상 길이 편집 기능 (15초 제한)

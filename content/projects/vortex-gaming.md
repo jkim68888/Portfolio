@@ -8,11 +8,13 @@ period: "2024.09 ~ 2024.12"
 tagline: "NFT 게이밍 커뮤니티"
 summary: "NFT 게이밍 커뮤니티 웹 서비스의 기능을 네이티브 iOS 앱으로 구현한 프로젝트"
 stack: ["Swift", "UIKit", "WebSocket"]
-thumbnail: ""
+thumbnail: "/projects/vortex-gaming/cover.jpg"
+# 프로젝트 목록 카드 오른쪽에 보이는 대표 화면
+preview: "/projects/vortex-gaming/08.jpg"
 links: [{"label": "웹사이트", "url": "https://vortexgaming.io/en"}]
 status: "웹 서비스(링크)의 기능을 네이티브 앱으로 옮기는 프로젝트였으나, 앱은 출시되지 못하고 마무리됨"
 notionId: "27633aa8-a192-817c-aeae-fb1fef628628"
-# 아래는 챗봇 답변용 정보 (화면에는 노출하지 않음)
+# team·myRole은 상세 페이지와 챗봇에, interviewQA는 챗봇에만 사용
 team: "인벤 소속으로, 당시 인벤의 자회사였던 협업사 Vortex Gaming의 개발자들과 함께 개발. iOS 약 4명, Android 약 4명, 백엔드 약 4명, 기획자와 디자이너 별도"
 myRole: "여러 iOS 개발자와 협업하며 채팅, 알림함, 블록체인 지갑 연동 파트를 담당"
 interviewQA:
@@ -104,7 +106,7 @@ interviewQA:
 
 #### 이미지 합성 작업
 
-<!-- IMAGE: IMG_2457.jpg (block 27633aa8-a192-816c-8edc-c207ded1ddb3) -->
+![볼텍스 게이밍 화면 1](/projects/vortex-gaming/01.jpg)
 > 여러장의 이미지를 클라이언트에서 합성
 > - 아바타 아이콘 위에 이미지 레이어를 순서대로 오버레이하기
 >   - 서버에서 받아온 각각의 이미지에는 order number가 있음
@@ -116,26 +118,26 @@ interviewQA:
 
 ### 📌 주요 기능
 
-<!-- IMAGE: IMG_2414.jpg (block 27633aa8-a192-8102-9a94-f38f1e834a20) -->
+![토큰 보유 현황 조회](/projects/vortex-gaming/02.jpg)
 - 토큰 보유 현황 조회
-<!-- IMAGE: IMG_2419.jpg (block 27633aa8-a192-818e-b1e1-f5dde0d74a98) -->
+![토큰 교환/전송](/projects/vortex-gaming/03.jpg)
 - 토큰 교환/전송
 
-<!-- IMAGE: IMG_2421.jpg (block 27633aa8-a192-8138-a855-f71c903bb720) -->
+![알림 수신함](/projects/vortex-gaming/04.jpg)
 - 알림 수신함
 
-<!-- IMAGE: IMG_2420.jpg (block 27633aa8-a192-81ad-b02f-e31d78184a2b) -->
+![밈토큰 생성](/projects/vortex-gaming/05.jpg)
 - 밈토큰 생성
-<!-- IMAGE: IMG_2457.jpg (block 27633aa8-a192-81f9-9af2-dcf5cf48eff7) -->
+![이미지 합성](/projects/vortex-gaming/06.jpg)
 - 이미지 합성
 
-<!-- IMAGE: IMG_2458.jpg (block 27633aa8-a192-81f3-b3b0-d39e4ac99905) -->
+![토큰 전송](/projects/vortex-gaming/07.jpg)
 - 토큰 전송
-<!-- IMAGE: IMG_2460.jpg (block 27633aa8-a192-8114-8a46-fa93ad17c5cd) -->
+![채팅방 리스트](/projects/vortex-gaming/08.jpg)
 - 채팅방 리스트
 - 채팅방 검색
 
-<!-- IMAGE: IMG_2459.jpg (block 27633aa8-a192-81b0-a620-f588a6151a56) -->
+![채팅 리스트](/projects/vortex-gaming/09.jpg)
 - 채팅 리스트
 - 채팅 내역 검색
 - 답장 기능
