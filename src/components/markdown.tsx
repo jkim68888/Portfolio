@@ -22,7 +22,7 @@ export function MarkdownContent({ content, imageSizes = {}, className = "" }: Ma
           width={size.width}
           height={size.height}
           sizes="(min-width: 768px) 360px, 80vw"
-          className="my-4 max-h-[480px] w-auto rounded-xl border border-zinc-200"
+          className="my-4 max-h-[480px] w-auto rounded-xl border border-gray-200"
         />
       );
     },
@@ -44,7 +44,7 @@ export function MarkdownContent({ content, imageSizes = {}, className = "" }: Ma
 
   return (
     <div
-      className={`prose prose-zinc prose-headings:font-bold prose-a:text-accent prose-blockquote:border-l-zinc-300 prose-blockquote:font-normal prose-blockquote:text-zinc-700 prose-blockquote:not-italic prose-code:before:content-none prose-code:after:content-none prose-pre:overflow-x-auto max-w-none [&_blockquote_p]:before:content-none [&_blockquote_p]:after:content-none ${className}`}
+      className={`prose prose-zinc prose-headings:font-bold prose-a:text-accent prose-blockquote:border-l-gray-300 prose-li:marker:text-gray-400 prose-blockquote:font-normal prose-blockquote:text-zinc-700 prose-blockquote:not-italic prose-code:before:content-none prose-code:after:content-none prose-pre:overflow-x-auto max-w-none [&_blockquote_p]:before:content-none [&_blockquote_p]:after:content-none ${className}`}
     >
       {/* Notion에서 블록 안 줄바꿈을 그대로 살리려고 remark-breaks를 쓴다. */}
       <Markdown remarkPlugins={[remarkGfm, remarkBreaks]} components={components}>

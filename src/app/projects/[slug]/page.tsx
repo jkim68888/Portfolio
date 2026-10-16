@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: PageProps<"/projects/[slug]">
 function DetailSection({ id, title, children }: { id: string; title: string; children: React.ReactNode }) {
   return (
     <section aria-labelledby={id} className="mt-14">
-      <h2 id={id} className="mb-5 text-xl font-bold tracking-tight">
+      <h2 id={id} className="border-l-accent mb-5 border-l-4 pl-3 text-xl font-bold tracking-tight">
         {title}
       </h2>
       {children}
@@ -85,16 +85,19 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
 
   return (
     <main className="mx-auto w-full max-w-5xl px-4 pt-8 pb-24 sm:px-6">
-      <Link href={back.href} className="text-sm font-medium text-zinc-500 hover:text-zinc-900">
+      <Link href={back.href} className="hover:text-accent text-sm font-medium text-zinc-500 transition-colors">
         ← {back.label}
       </Link>
 
       <header className="mt-6">
-        <p className="text-accent text-sm font-semibold">{CATEGORY_LABELS[project.category]}</p>
+        <p className="text-accent inline-flex items-center gap-2 rounded-full bg-gray-100 px-3 py-1 text-sm font-semibold">
+          <span aria-hidden className="bg-accent size-1.5 rounded-full" />
+          {CATEGORY_LABELS[project.category]}
+        </p>
         <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">{project.title}</h1>
         <p className="mt-3 text-lg text-zinc-600">{project.summary || project.tagline}</p>
         <div className="mt-5">
-          <TagList items={project.stack} label="사용 기술" size="md" />
+          <TagList items={project.stack} label="사용 기술" size="md" tone="accent" />
         </div>
         {project.links.length > 0 && (
           <div className="mt-6 flex flex-wrap gap-2">
@@ -104,7 +107,7 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
                 href={link.url}
                 target="_blank"
                 rel="noreferrer"
-                className="rounded-full border border-zinc-300 px-4 py-2 text-sm font-semibold transition hover:bg-zinc-100"
+                className="text-accent hover:bg-accent-soft rounded-full border border-gray-200 bg-white px-4 py-2 text-sm font-semibold transition"
               >
                 {link.label} ↗
               </a>
@@ -120,7 +123,7 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
 
       {cover && (
         // 배너는 가로로 매우 길어서, 좁은 화면에서는 높이를 유지하고 가로로 넘겨 보게 한다.
-        <div className="mt-10 overflow-x-auto rounded-2xl border border-zinc-200 bg-zinc-50">
+        <div className="bg-accent-soft mt-10 overflow-x-auto rounded-2xl border border-gray-200 shadow-sm">
           <Image
             src={project.thumbnail}
             alt={`${project.title} 대표 화면`}
@@ -133,11 +136,11 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
         </div>
       )}
 
-      <dl className="mt-10 grid gap-x-8 gap-y-5 rounded-2xl bg-zinc-50 p-6 sm:grid-cols-[auto_1fr]">
+      <dl className="mt-10 grid gap-x-8 gap-y-5 rounded-2xl bg-gray-100 p-6 sm:grid-cols-[auto_1fr]">
         {facts.map((fact) => (
           <div key={fact.label} className="contents">
-            <dt className="text-sm font-semibold text-zinc-500">{fact.label}</dt>
-            <dd className="-mt-4 text-sm leading-relaxed text-zinc-800 sm:mt-0">{fact.value}</dd>
+            <dt className="text-sm font-semibold text-gray-500">{fact.label}</dt>
+            <dd className="-mt-4 text-sm leading-relaxed text-gray-800 sm:mt-0">{fact.value}</dd>
           </div>
         ))}
       </dl>

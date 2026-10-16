@@ -2,8 +2,8 @@ import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 import matter from "gray-matter";
 import { imageSize } from "image-size";
-import { cacheLife } from "next/cache";
 import { z } from "zod";
+import { contentCacheLife } from "./content-cache";
 import { collectImageSources } from "./project-sections";
 
 const PROJECTS_DIR = path.join(process.cwd(), "content/projects");
@@ -69,9 +69,7 @@ async function readProject(fileName: string): Promise<Project> {
 
 export async function getProjects(): Promise<Project[]> {
   "use cache";
-  // 배포본은 빌드 때 한 번 읽으면 충분하지만, 개발 중에는 content/*.md 수정이 바로 보이도록 캐시를 짧게 둔다.
-  if (process.env.NODE_ENV === "development") cacheLife("seconds");
-  else cacheLife("max");
+  contentCacheLife();
   const files = (await readdir(PROJECTS_DIR)).filter((file) => file.endsWith(".md"));
   const projects = await Promise.all(files.map(readProject));
   return projects.sort((a, b) => a.order - b.order);

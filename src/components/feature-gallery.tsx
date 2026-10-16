@@ -22,7 +22,7 @@ export function FeatureGallery({ items, imageSizes }: FeatureGalleryProps) {
                   width={size.width}
                   height={size.height}
                   sizes={wide ? "(min-width: 1024px) 460px, 90vw" : "(min-width: 1024px) 220px, 45vw"}
-                  className="w-full rounded-xl border border-zinc-200 bg-zinc-50"
+                  className="bg-accent-soft w-full rounded-xl border border-gray-200 shadow-sm"
                 />
               )}
               {item.content && (

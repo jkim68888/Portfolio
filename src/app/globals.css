@@ -7,8 +7,8 @@
 }
 
 @theme {
-  --color-accent: oklch(0.55 0.2 275);
-  --color-accent-soft: oklch(0.96 0.03 275);
+  --color-accent: oklch(0.373 0.034 259.733);
+  --color-accent-soft: oklch(0.985 0.002 247.839);
 }
 
 html {
@@ -18,8 +18,20 @@ html {
 }
 
 body {
-  @apply bg-white text-zinc-900 antialiased;
+  @apply text-zinc-900 antialiased;
   word-break: keep-all;
+  /* keep-all은 한국어 단어를 끊지 않는 대신, 긴 영문 식별자가 좁은 화면 밖으로 밀려날 수 있어 필요할 때만 끊게 한다. */
+  overflow-wrap: anywhere;
+  /* 화면 가장자리에 은은한 색 번짐을 깔아 흰 바탕의 단조로움을 줄인다. */
+  background:
+    radial-gradient(60rem 40rem at -10% -5%, oklch(0.95 0.05 330 / 0.7), transparent 60%),
+    radial-gradient(50rem 35rem at 110% 10%, oklch(0.95 0.05 240 / 0.7), transparent 60%),
+    radial-gradient(60rem 40rem at 50% 110%, oklch(0.96 0.06 85 / 0.6), transparent 60%), oklch(0.995 0.004 300);
+  background-attachment: fixed;
+}
+
+::selection {
+  background: oklch(0.88 0.1 330);
 }
 
 @media (prefers-reduced-motion: reduce) {

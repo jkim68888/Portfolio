@@ -7,10 +7,10 @@ export function ProjectRow({ project }: { project: Project }) {
   return (
     <Link
       href={`/projects/${project.slug}`}
-      className="group flex items-center gap-4 px-5 py-4 transition-colors hover:bg-zinc-50 focus-visible:bg-zinc-50 focus-visible:outline-none sm:px-6"
+      className="group hover:bg-accent-soft focus-visible:bg-accent-soft flex items-center gap-4 px-5 py-4 transition-colors focus-visible:outline-none sm:px-6"
     >
       {project.preview && (
-        <div className="relative aspect-[3/4] w-12 shrink-0 overflow-hidden rounded-lg border border-zinc-200 bg-zinc-50 sm:w-14">
+        <div className="bg-accent-soft relative aspect-[3/4] w-12 shrink-0 overflow-hidden rounded-lg border border-gray-200 sm:w-14">
           <Image src={project.preview} alt="" fill sizes="56px" className="object-cover object-top" />
         </div>
       )}
@@ -20,7 +20,7 @@ export function ProjectRow({ project }: { project: Project }) {
           <span className="text-xs text-zinc-500 tabular-nums">{project.period}</span>
         </div>
         <p className="mt-0.5 line-clamp-1 text-sm text-zinc-600">{project.summary || project.tagline}</p>
-        <p className="mt-1 hidden text-xs text-zinc-500 sm:block">{project.stack.join(" · ")}</p>
+        <p className="text-accent mt-1 hidden text-xs font-medium sm:block">{project.stack.join(" · ")}</p>
       </div>
       <span aria-hidden className="group-hover:text-accent text-zinc-300 transition group-hover:translate-x-0.5">
         →
