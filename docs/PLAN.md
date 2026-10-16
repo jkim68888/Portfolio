@@ -128,6 +128,7 @@
 - **모델 확정:** gemma4:e4b (정확도·속도 최고, 메모리 9.4GB가 단점, Apache 2.0). thinking이 기본으로 켜져 있어 호출 시 `think: false` 필수
 - **1차 벤치마크(exaone3.5):** 속도는 쓸 만함(첫 글자 4~14초, 22 tok/s). 다만 연봉 질문에 숫자를 지어내고, 일반론을 덧붙이고, 답변이 길게 나옴
 - **프롬프트 보강 내용:** 연봉·처우 고정 답변, 규칙을 끝에 한 번 더, 길이 제한 강화
+- **Tailscale (10/16):** 가입·Mac 설치 완료. Funnel 설정(MagicDNS·HTTPS·권한)은 Phase 3 인증 프록시 작업 때 진행
 - **앞당겨 끝낸 것:** 챗봇 시스템 프롬프트(D5), 벤치마크 스크립트(D2)
 - **본인 작업 대기:** Notion 이미지 내보내기, (선택) 프로젝트별 예상 질문을 3~5개로 늘리기
 
@@ -155,7 +156,7 @@
 - [x] Anthropic Console 가입, 크레딧 충전, API 키 발급 (`.env.local`에 저장, 유효성 확인 완료)
 - [x] 채팅에 노출된 API 키 재발급 (새 키 동작, 이전 키 폐기 확인)
 - [x] 월 사용 한도 설정 (Console → Limits)
-- [ ] Tailscale 가입, Mac에 설치
+- [x] Tailscale 가입, Mac에 설치 (VPN 구성·시스템 확장 허용 완료)
 - [ ] Upstash 가입, Redis DB 생성
 - [x] Vercel 가입, GitHub 저장소(private) 연결
 
@@ -193,7 +194,8 @@
 - [x] 모델 확정: **gemma4:e4b**, 측정 결과는 `docs/benchmarks/local-llm-2026-10-16.md`에 기록 (README 반영은 D7)
 - [ ] `keep_alive: -1`, 동시 처리 1개 설정
 - [ ] 인증 프록시 작성 (비밀키 헤더 검사, `/api/chat`과 상태 확인 경로만 허용)
-- [ ] Tailscale Funnel로 프록시 공개, 외부에서 키 없이 접근이 막히는지 확인
+- [ ] Tailscale 관리 콘솔에서 MagicDNS·HTTPS 인증서 켜기, 기기 이름 정리 (공개 주소 `https://<기기이름>.<tailnet>.ts.net`)
+- [ ] Tailscale Funnel로 프록시 공개 (첫 실행 시 Funnel 권한 승인), 외부에서 키 없이 접근이 막히는지 확인
 - [ ] 잠자기 방지, `launchd`로 부팅 시 자동 실행
 
 ### Phase 4. 포트폴리오 UI (D3~D4)
