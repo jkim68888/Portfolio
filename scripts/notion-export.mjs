@@ -274,6 +274,7 @@ async function main() {
       `stack: ${JSON.stringify(stack)}`,
       `thumbnail: ""`,
       `links: ${JSON.stringify(links)}`,
+      `status: ""`,
       `notionId: ${yamlString(project.id)}`,
       "# 아래는 챗봇 답변용 정보 (화면에는 노출하지 않음)",
       `team: ""`,

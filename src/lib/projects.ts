@@ -24,6 +24,8 @@ const projectSchema = z.object({
   stack: z.array(z.string()),
   thumbnail: z.string(),
   links: z.array(z.object({ label: z.string(), url: z.url() })),
+  // 서비스 종료·미출시처럼 링크가 없는 이유 등 현재 상태. 화면과 챗봇 모두 사용한다.
+  status: z.string().default(""),
   notionId: z.string(),
   // 챗봇 답변용 정보. 화면에는 노출하지 않는다.
   team: z.string(),

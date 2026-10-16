@@ -12,6 +12,7 @@ export type ProjectForPrompt = Pick<
   | "tagline"
   | "summary"
   | "stack"
+  | "status"
   | "team"
   | "myRole"
   | "interviewQA"
@@ -51,6 +52,7 @@ function formatDetail(project: ProjectForPrompt) {
     project.period && `기간: ${project.period}`,
     project.team && `팀 구성: ${project.team}`,
     project.myRole && `나의 역할: ${project.myRole}`,
+    project.status && `현재 상태: ${project.status}`,
   ].filter(Boolean);
   const qa = project.interviewQA.map(({ question, answer }) => `Q. ${question}\nA. ${answer}`);
 
