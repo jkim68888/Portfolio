@@ -4,17 +4,22 @@ slug: "picaloca"
 order: 2
 category: "company"
 company: "(주)피카로카"
-period: ""
+period: "2022.12 ~ 2024.05"
 tagline: "지도형 SNS"
 summary: "지도에서 게시물을 볼 수 있고, 게시물의 위치를 네비게이션으로 알려주는 “지도형 SNS” 어플리케이션"
-stack: ["RxSwift","UIKit"]
+stack: ["RxSwift", "UIKit"]
 thumbnail: ""
 links: []
+status: "회사가 폐업하면서 앱이 스토어에서 내려가 현재는 앱 링크가 없음"
 notionId: "27633aa8-a192-8172-b262-c06168c1ddfd"
 # 아래는 챗봇 답변용 정보 (화면에는 노출하지 않음)
-team: ""
-myRole: ""
-interviewQA: []
+team: "iOS 1명(본인), Android 1명, 백엔드 1명, CTO 1명"
+myRole: "iOS 전담. Android 앱만 출시된 상태에서 입사해 iOS 앱을 처음부터 개발해 출시했고, 이후 MVC에서 RxSwift·MVVM·Clean Architecture로의 리팩토링과 해외 서비스를 위한 v2(구글맵 전환, 4개 국어 로컬라이징)까지 진행"
+interviewQA:
+  - question: "MVC에서 클린 아키텍처로 리팩토링한 이유는 무엇인가요?"
+    answer: "입사 초기에는 빠른 출시를 위해 MVC로 개발했는데, 화면과 기능이 늘면서 ViewController가 비대해지고 뷰 코드와 비즈니스 로직이 섞여 유지보수가 어려워졌습니다. 그래서 RxSwift, MVVM, Clean Architecture로 View, ViewModel, UseCase, Repository 계층을 나눴습니다. 그 결과 관심사가 분리돼 코드를 읽고 고치기 쉬워졌고, 새 기능을 추가할 때 영향 범위도 줄었습니다."
+  - question: "지도에서 게시물 조회 API 호출을 어떻게 최적화했나요?"
+    answer: "처음에는 지도 상태가 바뀔 때마다 바로 게시물 조회 API를 호출해서, 지도를 조금만 움직여도 요청이 반복됐습니다. 백엔드 팀에서 트래픽 개선을 요청했고, 화면에서도 게시물이 계속 깜빡이는 문제가 있었습니다. 그래서 카메라 위치가 바뀌었을 때, 그리고 같은 위치에서는 줌 아웃할 때만 요청하도록 호출 조건을 정리했습니다."
 ---
 
 ### 📱 지도형 SNS

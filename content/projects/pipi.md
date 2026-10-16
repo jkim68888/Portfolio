@@ -4,17 +4,22 @@ slug: "pipi"
 order: 6
 category: "swift-side"
 company: ""
-period: ""
+period: "2024.04.01 ~ 2024.06.20"
 tagline: "일기와 커뮤니티"
 summary: "나만 볼 수 있는 일기와, 다른 사람들과 함께 게시물을 올려서 볼 수 있는 커뮤니티가 공존하는 어플리케이션"
-stack: ["SwiftUI","Combine"]
+stack: ["SwiftUI", "Combine"]
 thumbnail: ""
-links: [{"label":"GitHub","url":"https://github.com/team-ppeople"}]
+links: [{"label": "GitHub", "url": "https://github.com/team-ppeople"}, {"label": "App Store", "url": "https://apps.apple.com/kr/app/%ED%94%BC%ED%94%BC/id6480352084"}]
+status: ""
 notionId: "27633aa8-a192-8161-bcaf-c384e565950c"
 # 아래는 챗봇 답변용 정보 (화면에는 노출하지 않음)
-team: ""
-myRole: ""
-interviewQA: []
+team: "iOS 2명(본인 포함), Android 2명, 백엔드 2명"
+myRole: "직접 기획하고 팀원을 모집한 사이드 프로젝트. 기획, UI/UX 화면 설계와 디자인, iOS 개발(소셜 로그인, CoreData 기반 일기 CRUD, 이미지 크롭), 앱스토어 배포를 담당"
+interviewQA:
+  - question: "앱스토어 심사에서 리젝된 경험이 있나요?"
+    answer: "커뮤니티 기능이 있는데 사용자 차단·신고 기능이 없다는 이유로 리젝됐습니다. 그래서 내 UID와 차단할 사용자의 UID를 서버에 보내 차단하고, 차단한 사용자의 게시물·댓글·프로필이 보이지 않도록 처리한 뒤 재심사를 요청했습니다. EULA 약관이 없다는 이유로도 리젝돼서, 설정 화면에 약관을 추가해 해결했습니다."
+  - question: "이미지 업로드는 어떤 방식으로 구현했나요?"
+    answer: "Presigned URL 방식을 채택하려 했지만, 돌아보면 제대로 구현했다고 보기는 어렵습니다. 실제로는 클라이언트가 서버에 이미지를 보내면 서버가 S3에 올리고 파일 id를 돌려주고, 클라이언트가 그 id로 게시물을 등록하는 방식이었습니다. 당시 Presigned URL에 대한 이해가 부족했다는 걸 나중에 깨달았고, 본래 방식은 클라이언트가 서버에서 받은 URL로 S3에 직접 올려 서버 부하를 줄이는 것이라는 걸 정리했습니다."
 ---
 
 ### 📱 일기와 커뮤니티

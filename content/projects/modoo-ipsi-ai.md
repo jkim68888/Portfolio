@@ -4,17 +4,22 @@ slug: "modoo-ipsi-ai"
 order: 1
 category: "company"
 company: "(주)이노스피치"
-period: ""
-tagline: "AI모의면접 웹 서비스"
+period: "2025.12 ~ 2026.10"
+tagline: "AI 모의면접 웹 서비스"
 summary: "생기부 기반 AI 모의면접, 생기부 분석, 학교/학과 탐색 등의 기능을 통해 대학입시 준비를 할 수 있는 웹 플랫폼"
-stack: ["React","TypeScript","Vite","Zustand","Tailwind"]
+stack: ["React", "TypeScript", "Vite", "Zustand", "Tailwind"]
 thumbnail: ""
-links: []
+links: [{"label": "웹사이트", "url": "https://www.modu-ipsi.com/"}]
+status: ""
 notionId: "33133aa8-a192-8061-b574-fdfe6beeefe6"
 # 아래는 챗봇 답변용 정보 (화면에는 노출하지 않음)
-team: ""
-myRole: ""
-interviewQA: []
+team: "프론트엔드 1명(본인), 백엔드 1명"
+myRole: "프론트엔드 전담. 영업팀이 가져온 아이디어를 바탕으로 기획을 구체화하고 Figma로 화면을 직접 디자인한 뒤, 로그인·회원가입·마이페이지를 포함한 모든 메뉴의 화면과 기능을 구현하고 S3 + CloudFront 배포까지 담당"
+interviewQA:
+  - question: "API 에러 처리는 어떤 기준으로 설계했나요?"
+    answer: "서버가 HTTP 200으로 응답하면서 본문의 result_code에 HTTP 의미를 담는 구조라서, \"result_code가 2xx면 성공, 나머지는 전부 에러\"라는 규칙 하나로 정리했습니다. 처리 중을 뜻하는 202도 정상 응답이라 단순히 200인지만 비교하면 안 됐기 때문입니다. axios 인스턴스 하나에 이 규칙과 공통 에러 처리를 모았고, 401이면 스토어를 초기화한 뒤 로그인 화면으로 보내도록 했습니다."
+  - question: "오래 걸리는 작업은 어떻게 처리했나요?"
+    answer: "생기부·이력서 예상 질답 생성은 동기 호출로는 타임아웃 위험이 커서, 작업을 생성한 뒤 10초 간격으로 상태를 확인하는 폴링 구조로 바꿨습니다. 최대 10분까지만 확인하도록 상한을 두었고, 호출할 API만 주입받는 공통 훅으로 만들어 생기부와 이력서가 같은 코드를 쓰게 했습니다. 화면을 떠나면 폴링을 멈추고, StrictMode의 이중 마운트에도 대비했습니다."
 ---
 
 ### 📱 AI모의면접 웹 서비스

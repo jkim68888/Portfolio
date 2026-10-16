@@ -4,17 +4,23 @@ slug: "hybrid-app"
 order: 9
 category: "rn-side"
 company: ""
-period: ""
-tagline: "하이브리드앱"
+period: "2026.07.29 ~ 2026.08.08"
+tagline: "웹뷰 기반 하이브리드 앱"
 summary: "네이버 웹을 앱에서 사용할 수 있는 어플리케이션"
-stack: ["WebView","TypeScript","Context Api"]
+stack: ["React Native","WebView","TypeScript","Context API"]
 thumbnail: ""
 links: [{"label":"GitHub","url":"https://github.com/jkim68888/HybridApp"}]
 notionId: "30b33aa8-a192-8079-967c-d7e254099182"
 # 아래는 챗봇 답변용 정보 (화면에는 노출하지 않음)
-team: ""
-myRole: ""
-interviewQA: []
+team: "1인 개발"
+myRole: "React Native에서 웹뷰 기반 하이브리드 앱 구조를 익히기 위해 혼자 기획·개발한 학습 프로젝트. 웹뷰 로드와 화면 이동, 쿠키 동기화 로그인, 공유·뒤로가기·Pull To Refresh 같은 네이티브 기능 연동을 직접 구현"
+interviewQA:
+  - question: "웹뷰 안에서 로그인 상태는 어떻게 관리했나요?"
+    answer: "웹에서 로그인하면 쿠키가 생기기 때문에, 앱에서는 @react-native-cookies/cookies 라이브러리로 쿠키를 읽어서 로그인 상태를 판단했습니다. 쿠키가 없으면 로그인 버튼을 보여주고, 로그인 페이지에서 웹 로그인이 끝나면 웹뷰를 새로고침해 상태를 반영했습니다. 쿠키가 있으면 로그아웃 버튼을 보여주고, 로그아웃할 때는 쿠키를 삭제한 뒤 웹뷰를 새로고침했습니다."
+  - question: "웹뷰 앱을 네이티브 앱처럼 자연스럽게 만들기 위해 어떤 처리를 했나요?"
+    answer: "웹사이트를 그대로 띄우기만 하면 앱이라기보다 브라우저처럼 느껴져서, 네이티브 동작을 하나씩 연결했습니다. 로딩 중에는 로딩바를 보여주고, 뒤로가기·앞으로가기·새로고침 버튼과 Pull To Refresh, 네이티브 공유 기능을 넣었습니다. 안드로이드 백버튼도 웹뷰의 뒤로가기와 연결했고, 앱에서 어색한 핀치 줌, 텍스트 롱 프레스, 링크 롱 프레스 프리뷰는 비활성화했습니다. 웹사이트의 요청을 가로채서 새로운 스크린으로 이동시키는 처리도 했습니다."
+  - question: "웹과 네이티브의 차이를 체감한 점"
+    answer: ""
 ---
 
 ### 📱 하이브리드앱

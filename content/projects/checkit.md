@@ -4,17 +4,21 @@ slug: "checkit"
 order: 10
 category: "rn-side"
 company: ""
-period: ""
+period: "2025.05.24 ~ 2025.06.06"
 tagline: "Todo 앱"
 summary: "날짜 별로 Todo 리스트를 정리할 수 있는 어플리케이션"
-stack: ["Expo","TypeScript","Context Api"]
+stack: ["React Native","Expo","TypeScript","Context API"]
 thumbnail: ""
-links: [{"label":"GitHub","url":"https://github.com/jkim68888/Check-it"}]
+links: [{"label":"GitHub","url":"https://github.com/jkim68888/Check-it"},{"label":"App Store","url":"https://apps.apple.com/us/app/%EC%B2%B4%ED%81%AC%EC%9E%87/id6746921529"}]
 notionId: "27633aa8-a192-816d-a55f-dfe131dee390"
 # 아래는 챗봇 답변용 정보 (화면에는 노출하지 않음)
-team: ""
-myRole: ""
-interviewQA: []
+team: "1인 개발"
+myRole: "아이디어부터 앱스토어 출시까지 혼자 만든 0→1 프로젝트. 기획, Figma를 이용한 UI 디자인, 앱 개발, EAS Build를 이용한 iOS·Android 빌드 및 배포를 모두 직접 진행. iOS는 앱스토어에 출시했고, Android는 플레이스토어 비공개 테스트 단계로 테스터를 모집 중"
+interviewQA:
+  - question: "상태 관리로 Context API를 쓴 이유는 무엇인가요?"
+    answer: "처음에는 할 일 데이터를 props로 내려줬는데, 컴포넌트가 늘면서 props drilling이 심해지고 할 일 추가·삭제·수정 로직이 여러 컴포넌트에 흩어져 관리가 어려워졌습니다. 그래서 Context API로 TodoContext를 만들어 할 일 관련 로직을 한곳에 모으고, Provider로 데이터와 기능을 함께 제공하도록 바꿨습니다."
+  - question: "TypeScript 타입은 어떤 기준으로 설계했나요?"
+    answer: "초기에는 모든 Props를 type Props = {...}로 선언해서 어떤 컴포넌트의 타입인지, 재사용하는 타입인지 구분이 모호했습니다. 그래서 컴포넌트 Props는 PrioritySelectBoxProps처럼 컴포넌트 이름을 붙인 interface로 선언하고, 여러 곳에서 쓰는 공통 타입만 type으로 별도 파일에 분리했습니다. 확장이 필요한 부분은 유틸리티 타입을 활용했습니다."
 ---
 
 ### 📱 Todo 앱

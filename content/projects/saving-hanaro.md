@@ -4,17 +4,22 @@ slug: "saving-hanaro"
 order: 3
 category: "company"
 company: "(주)피카로카"
-period: ""
+period: "2023.03 ~ 2024.05"
 tagline: "예적금 포트폴리오"
 summary: "예적금 상품의 금리 비교와 포트폴리오 만들기를 통한 내 예적금 수익 예측이 가능한 핀테크 어플리케이션"
-stack: ["Swift","UIKit","WebView"]
+stack: ["Swift", "UIKit", "WebView", "React"]
 thumbnail: ""
 links: []
+status: "회사가 폐업하면서 앱이 스토어에서 내려가 현재는 앱 링크가 없음"
 notionId: "27633aa8-a192-8114-a8d1-edc9799b83bd"
 # 아래는 챗봇 답변용 정보 (화면에는 노출하지 않음)
-team: ""
-myRole: ""
-interviewQA: []
+team: "iOS 1명(본인), Android 1명, 웹 프론트엔드 1명, 백엔드 1명, CTO 1명"
+myRole: "iOS 전담. React.js로 개발된 웹을 WKWebView로 패키징해 iOS 앱으로 출시하고, 애플 로그인·탈퇴, 웹뷰 JS 브릿지, 웹 쿠키 동기화 같은 네이티브 기능을 구현. React.js 웹 유지보수도 함께 진행"
+interviewQA:
+  - question: "웹과 네이티브 사이의 JS 브릿지는 어떻게 구현했나요?"
+    answer: "WKScriptMessageHandler를 사용했습니다. 웹에서 애플 로그인 버튼을 누르면 window.webkit.messageHandlers로 네이티브에 메시지를 보내고, 앱은 등록해 둔 핸들러에서 메시지를 받아 애플 로그인을 진행합니다. 로그인이 끝나면 evaluateJavaScript로 웹의 함수를 호출해 결과 토큰을 다시 웹에 전달했습니다."
+  - question: "하이브리드 앱을 개발하면서 느낀 장단점은 무엇인가요?"
+    answer: "웹 기반 UI라 플랫폼 간 코드를 재사용할 수 있어 개발이 빠르고, 웹 내용을 바꾸면 앱스토어 배포 없이 바로 반영할 수 있다는 점이 장점이었습니다. 반면 완전한 네이티브 앱과는 사용자 경험에 미묘한 차이가 있고, 네이티브와 웹 사이에서 생긴 문제는 원인을 찾기 어려웠습니다. iOS Safari와 WKWebView의 동작 차이에도 따로 대응해야 했습니다."
 ---
 
 ### 📱 예적금 포트폴리오

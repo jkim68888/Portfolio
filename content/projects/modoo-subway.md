@@ -4,17 +4,20 @@ slug: "modoo-subway"
 order: 7
 category: "swift-side"
 company: ""
-period: ""
+period: "2024.07.03 ~ 2024.12.15"
 tagline: "실시간 지하철 도착 정보 제공"
 summary: "실시간 지하철 도착 정보를 볼 수 있고, 자주 가는 지하철역의 도착 정보를 즐겨찾기 하고, 즐겨찾기를 모아 폴더로 보관할 수 있는 “지하철” 어플리케이션"
-stack: ["SwiftUI","Combine","SwiftData"]
+stack: ["SwiftUI", "Combine", "SwiftData"]
 thumbnail: ""
-links: [{"label":"GitHub","url":"https://github.com/team-modoo"}]
+links: [{"label": "GitHub", "url": "https://github.com/team-modoo"}, {"label": "App Store", "url": "https://apps.apple.com/kr/app/%EB%AA%A8%EB%91%90%EC%9D%98-%EC%A7%80%ED%95%98%EC%B2%A0/id6554003709"}]
+status: ""
 notionId: "27633aa8-a192-81cb-8b8b-cc71a3036a12"
 # 아래는 챗봇 답변용 정보 (화면에는 노출하지 않음)
-team: ""
-myRole: ""
-interviewQA: []
+team: "iOS 2명(본인 포함), 디자이너 1명"
+myRole: "다른 iOS 개발자와 협업해 개발부터 앱스토어 배포까지 진행. 지하철역 검색, 실시간 도착 정보 조회, 온보딩 화면, 즐겨찾기 기능을 담당"
+interviewQA:
+  - question: "디자이너와는 어떻게 협업했나요?"
+    answer: "디자이너와 협업한 첫 사이드 프로젝트였습니다. Figma 디자인과 실제 UI의 미세한 차이까지 기준으로 삼아 반복해서 조율했습니다. 디자이너가 스크린샷과 Figma 기준을 함께 담은 QA 시트를 작성해 줘서 빠르고 정확하게 수정할 수 있었습니다."
 ---
 
 ### 📱 실시간 지하철 도착 정보 제공
