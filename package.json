@@ -12,10 +12,13 @@
     "content:export": "node scripts/notion-export.mjs",
     "llm:benchmark": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/llm-benchmark.mjs",
     "og:build": "node scripts/build-og-image.mjs",
-    "llm:proxy": "node --env-file-if-exists=local-llm/.env local-llm/proxy.mjs"
+    "llm:proxy": "node --env-file-if-exists=local-llm/.env local-llm/proxy.mjs",
+    "chat:logs": "node --env-file-if-exists=.env.local scripts/chat-logs.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.135.0",
+    "@upstash/ratelimit": "^2.2.0",
+    "@upstash/redis": "^1.39.0",
     "gray-matter": "^4.0.3",
     "image-size": "^2.0.4",
     "next": "16.4.1",

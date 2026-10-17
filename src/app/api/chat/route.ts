@@ -1,3 +1,4 @@
+import { after } from "next/server";
 import { streamCloud, CLOUD_MODEL } from "@/lib/chat/cloud-engine";
 import { selectFocusSlugs } from "@/lib/chat/context";
 import {
@@ -9,6 +10,7 @@ import {
 } from "@/lib/chat/local-engine";
 import { buildSystemPrompt } from "@/lib/chat/prompt";
 import { chatRequestSchema, type ChatEvent, type FallbackReason } from "@/lib/chat/protocol";
+import { checkRateLimit, saveChatLog, visitorId, type ChatLog } from "@/lib/chat/store";
 import { getProfile } from "@/lib/profile";
 import { getChatProjects } from "@/lib/projects";
 
@@ -21,7 +23,37 @@ export async function POST(request: Request) {
     return Response.json({ error: "요청 형식이 올바르지 않습니다." }, { status: 400 });
   }
   const { messages, projectSlug } = parsed.data;
+
+  const visitor = visitorId(request);
+  const limit = await checkRateLimit(visitor);
+  if (!limit.ok) {
+    return Response.json(
+      { error: "질문이 너무 많아요. 잠시 후 다시 시도해 주세요." },
+      { status: 429, headers: { "retry-after": String(limit.retryAfterSec) } },
+    );
+  }
+
   const [projects, profile] = await Promise.all([getChatProjects(), getProfile()]);
+  const startedAt = Date.now();
+
+  // 응답이 끝난 뒤 대화 로그를 남긴다. 저장 실패나 지연이 답변에 영향을 주지 않는다.
+  const log: ChatLog = {
+    at: new Date(startedAt).toISOString(),
+    visitor,
+    projectSlug: projectSlug ?? null,
+    question: messages.at(-1)?.content ?? "",
+    answer: "",
+    requestedEngine: parsed.data.engine,
+    engine: null,
+    model: null,
+    fallbackReason: null,
+    outcome: "aborted",
+    firstTokenMs: null,
+    totalMs: 0,
+  };
+  let finish: () => void = () => {};
+  const finished = new Promise<void>((resolve) => (finish = resolve));
+  after(() => finished.then(() => saveChatLog({ ...log, totalMs: Date.now() - startedAt })));
 
   // 사용자가 채팅을 닫거나 중단하면 엔진 호출도 멈춘다.
   const abort = new AbortController();
@@ -31,7 +63,19 @@ export async function POST(request: Request) {
   const encoder = new TextEncoder();
   const stream = new ReadableStream<Uint8Array>({
     async start(controller) {
-      const send = (event: ChatEvent) => controller.enqueue(encoder.encode(`${JSON.stringify(event)}\n`));
+      const send = (event: ChatEvent) => {
+        if (event.type === "meta") {
+          Object.assign(log, { engine: event.engine, model: event.model, fallbackReason: event.fallbackReason });
+          if (event.restart) Object.assign(log, { answer: "", firstTokenMs: null });
+        } else if (event.type === "delta") {
+          log.firstTokenMs ??= Date.now() - startedAt;
+          log.answer += event.text;
+        } else {
+          log.outcome = event.type;
+          if (event.type === "error") log.answer = event.message;
+        }
+        controller.enqueue(encoder.encode(`${JSON.stringify(event)}\n`));
+      };
 
       let fallbackReason: FallbackReason | null = null;
       if (parsed.data.engine === "local") {
@@ -76,6 +120,7 @@ export async function POST(request: Request) {
         });
       } finally {
         if (!signal.aborted) controller.close();
+        finish();
       }
     },
     cancel() {
