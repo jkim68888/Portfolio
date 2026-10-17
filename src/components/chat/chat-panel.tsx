@@ -183,7 +183,7 @@ export function ChatPanel() {
             <button
               type="button"
               onClick={reset}
-              className="rounded-md px-2 py-1.5 text-xs font-medium text-zinc-500 hover:bg-gray-100 hover:text-zinc-800"
+              className="cursor-pointer rounded-md px-2 py-1.5 text-xs font-medium text-zinc-500 hover:bg-gray-100 hover:text-zinc-800"
             >
               새 대화
             </button>
@@ -192,7 +192,7 @@ export function ChatPanel() {
             type="button"
             onClick={closeChat}
             aria-label="채팅 닫기"
-            className="flex size-9 items-center justify-center rounded-md text-xl text-zinc-500 hover:bg-gray-100 hover:text-zinc-800"
+            className="flex size-9 cursor-pointer items-center justify-center rounded-md text-xl text-zinc-500 hover:bg-gray-100 hover:text-zinc-800"
           >
             <span aria-hidden>×</span>
           </button>
@@ -208,7 +208,7 @@ export function ChatPanel() {
                 type="button"
                 aria-pressed={selected}
                 onClick={() => changeEngine(option.value)}
-                className={`rounded-lg px-2 py-1.5 text-xs font-semibold transition sm:text-sm ${
+                className={`cursor-pointer rounded-lg px-2 py-1.5 text-xs font-semibold transition sm:text-sm ${
                   selected
                     ? "bg-white text-violet-700 shadow-sm"
                     : highlight
@@ -232,7 +232,11 @@ export function ChatPanel() {
             <span className="rounded-full bg-violet-50 px-2.5 py-1 font-medium text-violet-700">
               {project.title}에 대해 질문 중
             </span>
-            <button type="button" onClick={clearProject} className="text-zinc-400 underline hover:text-zinc-700">
+            <button
+              type="button"
+              onClick={clearProject}
+              className="cursor-pointer text-zinc-400 underline hover:text-zinc-700"
+            >
               전체 프로젝트로 묻기
             </button>
           </p>
@@ -251,7 +255,7 @@ export function ChatPanel() {
                   <button
                     type="button"
                     onClick={() => submit(question)}
-                    className="rounded-full border border-violet-200 bg-white px-3 py-1.5 text-left text-sm text-violet-700 transition hover:bg-violet-50"
+                    className="cursor-pointer rounded-full border border-violet-200 bg-white px-3 py-1.5 text-left text-sm text-violet-700 transition hover:bg-violet-50"
                   >
                     {question}
                   </button>
@@ -305,7 +309,7 @@ export function ChatPanel() {
             <button
               type="button"
               onClick={stop}
-              className="h-11 shrink-0 rounded-xl bg-zinc-800 px-4 text-sm font-semibold text-white hover:bg-zinc-700"
+              className="h-11 shrink-0 cursor-pointer rounded-xl bg-zinc-800 px-4 text-sm font-semibold text-white hover:bg-zinc-700"
             >
               중단
             </button>
@@ -313,7 +317,7 @@ export function ChatPanel() {
             <button
               type="submit"
               disabled={!input.trim()}
-              className="h-11 shrink-0 rounded-xl bg-violet-600 px-4 text-sm font-semibold text-white transition hover:bg-violet-700 disabled:bg-gray-200 disabled:text-gray-400"
+              className="h-11 shrink-0 cursor-pointer rounded-xl bg-violet-600 px-4 text-sm font-semibold text-white transition hover:bg-violet-700 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-400"
             >
               보내기
             </button>

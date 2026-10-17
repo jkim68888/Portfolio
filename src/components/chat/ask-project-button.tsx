@@ -9,7 +9,7 @@ export function AskProjectButton({ slug, title }: { slug: string; title: string 
     <button
       type="button"
       onClick={() => openChat(slug)}
-      className="rounded-full bg-gradient-to-r from-violet-600 to-pink-500 px-4 py-2 text-sm font-semibold text-white shadow-md shadow-pink-500/20 transition hover:brightness-110"
+      className="cursor-pointer rounded-full bg-gradient-to-r from-violet-600 to-pink-500 px-4 py-2 text-sm font-semibold text-white shadow-md shadow-pink-500/20 transition hover:brightness-110"
     >
       💬 {title}에 대해 물어보기
     </button>
