@@ -10,7 +10,8 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "content:export": "node scripts/notion-export.mjs",
-    "llm:benchmark": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/llm-benchmark.mjs"
+    "llm:benchmark": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/llm-benchmark.mjs",
+    "og:build": "node scripts/build-og-image.mjs"
   },
   "dependencies": {
     "gray-matter": "^4.0.3",

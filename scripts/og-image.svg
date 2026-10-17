@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <!-- 사이트 배경(globals.css)과 같은 색 번짐 -->
+    <radialGradient id="glow-pink" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(-60 -40) scale(820 560)">
+      <stop offset="0" stop-color="#fbe0f3" />
+      <stop offset="1" stop-color="#fbe0f3" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="glow-blue" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1280 60) scale(720 520)">
+      <stop offset="0" stop-color="#dbe9fd" />
+      <stop offset="1" stop-color="#dbe9fd" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="glow-yellow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(600 700) scale(820 420)">
+      <stop offset="0" stop-color="#fdf0c8" />
+      <stop offset="1" stop-color="#fdf0c8" stop-opacity="0" />
+    </radialGradient>
+    <filter id="card-shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="18" stdDeviation="22" flood-color="#18181b" flood-opacity="0.14" />
+    </filter>
+  </defs>
+
+  <rect width="1200" height="630" fill="#fdfcfe" />
+  <rect width="1200" height="630" fill="url(#glow-pink)" />
+  <rect width="1200" height="630" fill="url(#glow-blue)" />
+  <rect width="1200" height="630" fill="url(#glow-yellow)" />
+
+  <g font-family="Pretendard">
+    <text x="96" y="150" font-size="24" font-weight="600" letter-spacing="6" fill="#7c3aed">PORTFOLIO</text>
+    <text x="92" y="258" font-size="100" font-weight="800" fill="#18181b">김지현</text>
+    <text x="96" y="322" font-size="42" font-weight="600" fill="#3f3f46">프론트엔드 개발자</text>
+    <text font-size="28" font-weight="400" fill="#52525b">
+      <tspan x="96" y="398">기획부터 배포까지, 화면 너머의 흐름을</tspan>
+      <tspan x="96" y="440">함께 만드는 프론트엔드 개발자</tspan>
+    </text>
+
+    <rect x="96" y="486" width="476" height="60" rx="30" fill="#ffffff" fill-opacity="0.85" stroke="#ddd6fe" stroke-width="2" />
+    <text x="334" y="525" font-size="24" font-weight="600" fill="#6d28d9" text-anchor="middle">프로젝트에 대해 AI 챗봇에게 물어보세요</text>
+  </g>
+
+  <!-- 홈 첫 화면의 아바타 카드와 같은 모양. href는 빌드 스크립트가 data URI로 바꾼다 -->
+  <g filter="url(#card-shadow)">
+    <rect x="806" y="150" width="300" height="330" rx="40" fill="#f3f4f6" stroke="#ffffff" stroke-width="3" />
+  </g>
+  <image href="avatar.png" x="846" y="193" width="220" height="244" />
+</svg>
