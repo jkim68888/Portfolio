@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
 import { Geist_Mono } from "next/font/google";
 import localFont from "next/font/local";
+import { ChatLauncher } from "@/components/chat/chat-launcher";
+import { ChatPanel } from "@/components/chat/chat-panel";
+import { ChatProvider } from "@/components/chat/chat-provider";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { getProjects } from "@/lib/projects";
 import "./globals.css";
 
 const pretendard = localFont({
@@ -24,7 +28,14 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  // 채팅 패널의 프로젝트 이름과 추천 질문(본인이 쓴 예상 질문 중 앞의 3개)
+  const chatProjects = (await getProjects()).map(({ slug, title, interviewQA }) => ({
+    slug,
+    title,
+    questions: interviewQA.slice(0, 3).map(({ question }) => question),
+  }));
+
   return (
     <html lang="ko" className={`${pretendard.variable} ${geistMono.variable} h-full`}>
       <body className="flex min-h-full flex-col font-sans">
@@ -34,11 +45,15 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         >
           본문으로 건너뛰기
         </a>
-        <SiteHeader />
-        <div id="main" className="flex-1">
-          {children}
-        </div>
-        <SiteFooter />
+        <ChatProvider projects={chatProjects}>
+          <SiteHeader />
+          <div id="main" className="flex-1">
+            {children}
+          </div>
+          <SiteFooter />
+          <ChatLauncher />
+          <ChatPanel />
+        </ChatProvider>
       </body>
     </html>
   );
