@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { AskProjectButton } from "@/components/chat/ask-project-button";
 import { FeatureGallery } from "@/components/feature-gallery";
 import { MarkdownContent } from "@/components/markdown";
 import { RetroAccordion } from "@/components/retro-accordion";
@@ -100,20 +99,21 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
         <div className="mt-5">
           <TagList items={project.stack} label="사용 기술" size="md" tone="accent" />
         </div>
-        <div className="mt-6 flex flex-wrap gap-2">
-          <AskProjectButton slug={project.slug} title={project.title} />
-          {project.links.map((link) => (
-            <a
-              key={link.url}
-              href={link.url}
-              target="_blank"
-              rel="noreferrer"
-              className="text-accent hover:bg-accent-soft rounded-full border border-gray-200 bg-white px-4 py-2 text-sm font-semibold transition"
-            >
-              {link.label} ↗
-            </a>
-          ))}
-        </div>
+        {project.links.length > 0 && (
+          <div className="mt-6 flex flex-wrap gap-2">
+            {project.links.map((link) => (
+              <a
+                key={link.url}
+                href={link.url}
+                target="_blank"
+                rel="noreferrer"
+                className="text-accent hover:bg-accent-soft rounded-full border border-gray-200 bg-white px-4 py-2 text-sm font-semibold transition"
+              >
+                {link.label} ↗
+              </a>
+            ))}
+          </div>
+        )}
         {project.status && (
           <p className="mt-6 rounded-xl bg-amber-50 px-4 py-3 text-sm text-amber-900">
             <span className="font-semibold">현재 상태</span> · {project.status}

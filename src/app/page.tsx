@@ -9,6 +9,9 @@ import { getProjects, periodStartValue } from "@/lib/projects";
 const EYEBROW_TONES = {
   gray: "text-gray-500",
   pink: "text-pink-600",
+  blue: "text-blue-600",
+  green: "text-green-600",
+  yellow: "text-yellow-600",
 } as const;
 
 function SectionHeading({
@@ -112,7 +115,7 @@ export default async function Home() {
       </section>
 
       <section id="experience" aria-labelledby="experience-title" className="py-12">
-        <SectionHeading id="experience" eyebrow="Experience" title="경력" tone="gray" />
+        <SectionHeading id="experience" eyebrow="Experience" title="경력" tone="blue" />
         <ol className="space-y-5">
           {profile.careers.map((career) => {
             const careerProjects = career.projects
@@ -125,8 +128,8 @@ export default async function Home() {
               >
                 <div className="bg-accent-soft flex flex-col gap-1 px-5 py-5 sm:flex-row sm:items-baseline sm:justify-between sm:px-6">
                   <div className="flex items-baseline gap-2">
-                    <span aria-hidden className="bg-accent size-2.5 self-center rounded-full" />
-                    <h3 className="text-accent text-lg font-bold">{career.company}</h3>
+                    <span aria-hidden className="bg-black size-2.5 self-center rounded-full" />
+                    <h3 className="text-lg font-bold">{career.company}</h3>
                     <p className="text-sm text-zinc-600">{career.role}</p>
                   </div>
                   <p className="text-sm text-zinc-600 tabular-nums">{career.period}</p>
@@ -145,7 +148,7 @@ export default async function Home() {
       </section>
 
       <section id="skills" aria-labelledby="skills-title" className="py-12">
-        <SectionHeading id="skills" eyebrow="Skills" title="기술 스택" tone="gray" />
+        <SectionHeading id="skills" eyebrow="Skills" title="기술 스택" tone="yellow" />
         <dl className="space-y-5">
           {profile.skills.map((skill) => (
             <div key={skill.group} className="flex flex-col gap-2 sm:flex-row sm:gap-6">
@@ -159,7 +162,7 @@ export default async function Home() {
       </section>
 
       <section id="projects" aria-labelledby="projects-title" className="py-12 pb-24">
-        <SectionHeading id="projects" eyebrow="Side Projects" title="사이드 프로젝트" tone="gray" />
+        <SectionHeading id="projects" eyebrow="Side Projects" title="사이드 프로젝트" tone="green" />
         <div className="flex flex-col gap-4">
           {sideProjects.map((project) => (
             <ProjectCard key={project.slug} project={project} />

@@ -7,7 +7,7 @@ export function ProjectRow({ project }: { project: Project }) {
   return (
     <Link
       href={`/projects/${project.slug}`}
-      className="group hover:bg-accent-soft focus-visible:bg-accent-soft flex items-center gap-4 px-5 py-4 transition-colors focus-visible:outline-none sm:px-6"
+      className="group hover:bg-blue-50 focus-visible:bg-accent-soft flex items-center gap-4 px-5 py-4 transition-colors focus-visible:outline-none sm:px-6"
     >
       {project.preview && (
         <div className="bg-accent-soft relative aspect-[3/4] w-12 shrink-0 overflow-hidden rounded-lg border border-gray-200 sm:w-14">
