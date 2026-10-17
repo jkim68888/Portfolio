@@ -41,7 +41,8 @@ export type ProjectMeta = z.infer<typeof projectSchema>;
 export type ImageSize = { width: number; height: number };
 export type Project = ProjectMeta & { body: string; imageSizes: Record<string, ImageSize> };
 
-async function readProject(fileName: string): Promise<Project> {
+// frontmatter 검증과 본문 정리만 한다. 이미지 크기는 화면에서만 필요하므로 따로 구한다.
+async function readProjectContent(fileName: string): Promise<Omit<Project, "imageSizes">> {
   const source = await readFile(path.join(PROJECTS_DIR, fileName), "utf8");
   const { data, content } = matter(source);
   const parsed = projectSchema.safeParse(data);
@@ -50,10 +51,15 @@ async function readProject(fileName: string): Promise<Project> {
   }
   // 이미지 자리표시 같은 HTML 주석은 화면·챗봇 모두에 필요 없으므로 제거한다.
   const body = content.replace(/<!--[\s\S]*?-->\n?/g, "").trim();
+  return { ...parsed.data, body };
+}
+
+async function readProject(fileName: string): Promise<Project> {
+  const project = await readProjectContent(fileName);
 
   // next/image에 넘길 크기를 빌드 시점에 미리 구해 둔다.
   const sources = [
-    ...new Set([...collectImageSources(body), parsed.data.thumbnail, parsed.data.preview].filter(Boolean)),
+    ...new Set([...collectImageSources(project.body), project.thumbnail, project.preview].filter(Boolean)),
   ];
   const imageSizes = Object.fromEntries(
     await Promise.all(
@@ -64,15 +70,26 @@ async function readProject(fileName: string): Promise<Project> {
     ),
   );
 
-  return { ...parsed.data, body, imageSizes };
+  return { ...project, imageSizes };
+}
+
+async function readAll<T extends { order: number }>(read: (fileName: string) => Promise<T>) {
+  const files = (await readdir(PROJECTS_DIR)).filter((file) => file.endsWith(".md"));
+  const projects = await Promise.all(files.map(read));
+  return projects.sort((a, b) => a.order - b.order);
 }
 
 export async function getProjects(): Promise<Project[]> {
   "use cache";
   contentCacheLife();
-  const files = (await readdir(PROJECTS_DIR)).filter((file) => file.endsWith(".md"));
-  const projects = await Promise.all(files.map(readProject));
-  return projects.sort((a, b) => a.order - b.order);
+  return readAll(readProject);
+}
+
+// 챗봇 서버용. 서버리스 함수에는 public/ 이미지가 없으므로 이미지 크기를 구하지 않는다.
+export async function getChatProjects(): Promise<Omit<Project, "imageSizes">[]> {
+  "use cache";
+  contentCacheLife();
+  return readAll(readProjectContent);
 }
 
 // "2024.04.01 ~ 2024.06.20", "2025.12 ~ 2026.10"처럼 형식이 섞인 기간에서 시작일을 정렬용 숫자로 만든다.
