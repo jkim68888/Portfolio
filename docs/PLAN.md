@@ -129,6 +129,8 @@
 - **1차 벤치마크(exaone3.5):** 속도는 쓸 만함(첫 글자 4~14초, 22 tok/s). 다만 연봉 질문에 숫자를 지어내고, 일반론을 덧붙이고, 답변이 길게 나옴
 - **프롬프트 보강 내용:** 연봉·처우 고정 답변, 규칙을 끝에 한 번 더, 길이 제한 강화
 - **Tailscale (10/16):** 가입·Mac 설치 완료. Funnel 설정(MagicDNS·HTTPS·권한)은 Phase 3 인증 프록시 작업 때 진행
+- **D5 챗봇 서버 (10/18):** 인증 프록시, 두 엔진, `/api/chat`·`/api/llm-status` 완료. 로컬에서 로컬 답변·클라우드 답변·오프라인 자동 전환·답변 도중 끊김 재시도·동시 요청 대기까지 확인. Funnel 공개·`launchd` 자동 실행도 완료(10/18). 남은 것: Vercel 환경 변수(`LOCAL_LLM_URL`, `LOCAL_LLM_SECRET`), 요청 제한(Upstash)
+- **로컬 응답 속도 주의:** Funnel 경유 답변이 40~65초 걸림(벤치마크 평균 7.5초). 측정 당시 스왑 12.9GB 사용 중이라 메모리 부족이 원인으로 보임. 개발 서버·브라우저를 띄운 채로는 느리고, 실제 운영 시에는 다른 앱을 줄여야 함 → D7에 다시 측정
 - **앞당겨 끝낸 것:** 챗봇 시스템 프롬프트(D5), 벤치마크 스크립트(D2)
 - **본인 작업 대기:** Notion 이미지 내보내기, (선택) 프로젝트별 예상 질문을 3~5개로 늘리기
 
@@ -192,11 +194,11 @@
 - [x] 비교용 벤치마크 스크립트 작성 (`npm run llm:benchmark`, 실제 챗봇과 같은 프롬프트로 질문 10개)
 - [x] 같은 질문 12개로 비교 (프롬프트 보강 후): 한국어 자연스러움, 사실 정확도, 첫 글자까지 시간, 초당 생성 속도, 메모리 사용량, 라이선스 → `docs/benchmarks/`
 - [x] 모델 확정: **gemma4:e4b**, 측정 결과는 `docs/benchmarks/local-llm-2026-10-16.md`에 기록 (README 반영은 D7)
-- [ ] `keep_alive: -1`, 동시 처리 1개 설정
-- [ ] 인증 프록시 작성 (비밀키 헤더 검사, `/api/chat`과 상태 확인 경로만 허용)
-- [ ] Tailscale 관리 콘솔에서 MagicDNS·HTTPS 인증서 켜기, 기기 이름 정리 (공개 주소 `https://<기기이름>.<tailnet>.ts.net`)
-- [ ] Tailscale Funnel로 프록시 공개 (첫 실행 시 Funnel 권한 승인), 외부에서 키 없이 접근이 막히는지 확인
-- [ ] 잠자기 방지, `launchd`로 부팅 시 자동 실행
+- [x] `keep_alive: -1`, 동시 처리 1개 설정 (프록시가 모든 요청에 `keep_alive: -1`을 붙이고, Ollama로는 한 번에 한 질문만 보냄)
+- [x] 인증 프록시 작성 (`local-llm/proxy.mjs`, `npm run llm:proxy`. 비밀키 헤더 검사, `POST /api/chat`·`GET /health`만 허용, 모델 고정, 127.0.0.1에서만 열림)
+- [x] Tailscale 관리 콘솔에서 MagicDNS·HTTPS 인증서 켜기 (공개 주소 `https://macbookpro.tail8daf57.ts.net`)
+- [x] Tailscale Funnel로 프록시 공개 (`tailscale funnel --bg 11435`, 직접 실행·승인), 외부 경로로 확인: 키 없음·틀린 키 401, Ollama API(`/api/tags`, `/api/pull`) 404, 올바른 키만 200
+- [x] 잠자기 방지, `launchd`로 부팅 시 자동 실행 (`sh local-llm/install-launchd.sh`: 프록시를 `caffeinate -s`로 감싸 전원 연결 중 잠자기 방지, 꺼지면 자동 재시작. Ollama는 brew services, Tailscale은 앱이 실행)
 
 ### Phase 4. 포트폴리오 UI (D3~D4)
 - [x] 공통 레이아웃 (고정 헤더, 푸터, 본문 바로가기 링크, Pretendard 폰트)
@@ -209,24 +211,24 @@
 - [x] 검색 노출 차단: `robots` 메타(noindex, nofollow) + 모든 경로에 `X-Robots-Tag` 헤더. 링크를 받은 사람만 보도록 sitemap은 만들지 않고, robots.txt로 크롤링도 막지 않음 (막으면 noindex를 못 읽음)
 - [x] OG 이미지: `scripts/og-image.svg` 원본 → `npm run og:build`로 `src/app/opengraph-image.png` 생성 (SNS가 SVG를 지원하지 않아 PNG로 변환, 상세 페이지도 같은 이미지 사용)
 - [x] `next/image` 적용 (빌드 시 이미지 크기 측정)
-- [ ] **1차 배포**
+- [ ] ~~**1차 배포**~~ 하지 않기로 함 (10/18). 최종 배포(D7)에서 한 번에 진행
 
 ### Phase 5. 챗봇 서버 (D5)
-- [ ] 엔진 인터페이스 정의: `streamAnswer({ messages, context }) → 공통 스트림`
-- [ ] 로컬 엔진: Ollama 스트리밍 호출 (프록시 경유, 비밀키 헤더)
-- [ ] 클라우드 엔진: `@anthropic-ai/sdk` 스트리밍, 시스템 프롬프트 캐싱
-- [ ] 로컬 상태 확인 API (`/api/llm-status`): 타임아웃 1~2초, 결과 30초 캐시
-- [ ] `/api/chat`: 요청 엔진 확인 → 로컬 불가 시 자동으로 클라우드 → 스트림 앞에 `{ engine, model, fallbackReason }` 전송
-- [ ] 로컬 호출 도중 연결이 끊기면 클라우드로 재시도
+- [x] 엔진 인터페이스 정의: 두 엔진 모두 `({ system, messages, signal }) → 글자 조각 AsyncGenerator`, 응답 형식은 `src/lib/chat/protocol.ts` (NDJSON: meta → delta… → done/error)
+- [x] 로컬 엔진: Ollama 스트리밍 호출 (프록시 경유, 비밀키 헤더) — `src/lib/chat/local-engine.ts`
+- [x] 클라우드 엔진: `@anthropic-ai/sdk` 스트리밍, 시스템 프롬프트 캐싱, effort low — `src/lib/chat/cloud-engine.ts`
+- [x] 로컬 상태 확인 API (`/api/llm-status`): 타임아웃 1.5초, 결과 30초 캐시, `{ online, busy, model }`
+- [x] `/api/chat`: 요청 엔진 확인 → 로컬 불가 시 자동으로 클라우드 → 스트림 앞에 `{ engine, model, fallbackReason }` 전송
+- [x] 로컬 호출 도중 연결이 끊기면 클라우드로 재시도 (`meta`를 `restart: true`로 한 번 더 보내고, UI는 받은 글을 버림)
 - [x] 시스템 프롬프트 생성 (`src/lib/chat/prompt.ts`, D1에 앞당겨 작성. `focusSlugs`로 엔진별 컨텍스트 조절)
   - [x] 1인칭 본인 시점, 면접 답변 말투 (존댓말, 간결하게)
   - [x] 제공된 정보 안에서만 답변, 모르면 "그 부분은 면접에서 직접 말씀드리겠습니다"
   - [x] 포트폴리오와 무관한 질문은 정중히 거절
   - [x] 지시 변경 시도(프롬프트 인젝션) 무시
-- [ ] 관련 프로젝트 선택: `projectSlug` → 키워드 매칭 → 요약 목록
-- [ ] 입력 검증 (zod): 메시지 길이, 대화 턴 수 상한
-- [ ] 요청 제한: IP당 분·일 한도 (Upstash Ratelimit)
-- [ ] 에러 처리: 두 엔진 모두 실패 시 안내 메시지와 이메일 연락 안내
+- [x] 관련 프로젝트 선택: `projectSlug` → 키워드 매칭(최근 질문 3개의 프로젝트명·회사명·2개 이하 프로젝트에만 쓰인 기술명) → 요약 목록 — `src/lib/chat/context.ts`
+- [x] 입력 검증 (zod): 메시지 1,000자, 대화 20개 상한, 마지막은 질문
+- [ ] 요청 제한: IP당 분·일 한도 (Upstash Ratelimit) → **Upstash 가입 후 진행**
+- [x] 에러 처리: 두 엔진 모두 실패 시 안내 메시지와 이메일 연락 안내
 
 ### Phase 6. 챗봇 UI (D6)
 - [ ] 진입점: 플로팅 버튼(아바타) + 상세 페이지의 "이 프로젝트에 대해 물어보기"
