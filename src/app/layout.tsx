@@ -19,6 +19,11 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "김지현 | 프론트엔드 개발자 포트폴리오",
   description: "프론트엔드 개발자 김지현의 포트폴리오입니다. 프로젝트에 대해 챗봇에게 직접 물어볼 수 있습니다.",
+  // 링크 미리보기 제목. 상세 페이지도 따로 정하지 않아 이 값을 물려받으므로, 어느 페이지 링크든 같은 제목으로 보인다.
+  openGraph: {
+    title: "김지현 포트폴리오",
+    description: "프론트엔드 개발자 김지현의 포트폴리오입니다. 프로젝트에 대해 챗봇에게 직접 물어볼 수 있습니다.",
+  },
   // 링크를 아는 사람만 보도록 검색 결과에서 제외. robots.txt로 크롤링을 막으면 noindex를 읽지 못하므로 막지 않음
   robots: { index: false, follow: false },
 };
