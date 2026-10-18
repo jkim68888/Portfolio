@@ -24,11 +24,11 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {
-  // 채팅 패널의 프로젝트 이름과 추천 질문(본인이 쓴 예상 질문 중 앞의 3개)
+  // 채팅 패널의 프로젝트 이름과 추천 질문(본인이 쓴 예상 질문 전체)
   const chatProjects = (await getProjects()).map(({ slug, title, interviewQA }) => ({
     slug,
     title,
-    questions: interviewQA.slice(0, 3).map(({ question }) => question),
+    questions: interviewQA.map(({ question }) => question),
   }));
 
   return (

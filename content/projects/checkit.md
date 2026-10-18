@@ -21,6 +21,10 @@ interviewQA:
     answer: "처음에는 할 일 데이터를 props로 내려줬는데, 컴포넌트가 늘면서 props drilling이 심해지고 할 일 추가·삭제·수정 로직이 여러 컴포넌트에 흩어져 관리가 어려워졌습니다. 그래서 Context API로 TodoContext를 만들어 할 일 관련 로직을 한곳에 모으고, Provider로 데이터와 기능을 함께 제공하도록 바꿨습니다."
   - question: "TypeScript 타입은 어떤 기준으로 설계했나요?"
     answer: "초기에는 모든 Props를 type Props = {...}로 선언해서 어떤 컴포넌트의 타입인지, 재사용하는 타입인지 구분이 모호했습니다. 그래서 컴포넌트 Props는 PrioritySelectBoxProps처럼 컴포넌트 이름을 붙인 interface로 선언하고, 여러 곳에서 쓰는 공통 타입만 type으로 별도 파일에 분리했습니다. 확장이 필요한 부분은 유틸리티 타입을 활용했습니다."
+  - question: "Expo를 선택한 이유는 무엇이고, 쓰면서 아쉬웠던 점은 무엇인가요?"
+    answer: ""
+  - question: "Android 비공개 테스트를 진행하면서 겪은 점은 무엇인가요?"
+    answer: ""
 ---
 
 ### 📱 Todo 앱

@@ -72,7 +72,10 @@ function formatDetail(project: ProjectForPrompt) {
     project.myRole && `나의 역할: ${project.myRole}`,
     project.status && `현재 상태: ${project.status}`,
   ].filter(Boolean);
-  const qa = project.interviewQA.map(({ question, answer }) => `Q. ${question}\nA. ${answer}`);
+  // 답변을 아직 쓰지 않은 예상 질문은 넣지 않는다. 빈 답을 보고 모델이 내용을 지어낼 수 있다.
+  const qa = project.interviewQA
+    .filter(({ answer }) => answer.trim())
+    .map(({ question, answer }) => `Q. ${question}\nA. ${answer}`);
 
   return [
     `<project title="${project.title}">`,

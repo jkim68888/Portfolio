@@ -4,7 +4,7 @@ slug: "portfolio-site"
 order: 11
 category: "next-side"
 company: ""
-period: "2026.10.15 ~"
+period: "2026.10.15 ~ 2026.10.18"
 tagline: "AI 면접 챗봇이 있는 포트폴리오"
 summary: "프로젝트를 소개하고, 면접관이 질문하면 제가 1인칭으로 답하는 AI 챗봇이 붙은 포트폴리오 웹사이트 (지금 보고 계신 사이트)"
 stack: ["Next.js", "TypeScript", "Tailwind", "Ollama", "Claude API", "Upstash Redis"]
@@ -26,6 +26,10 @@ interviewQA:
     answer: "Ollama에는 자체 인증이 없어서 그대로 공개하면 누구나 제 Mac의 모델을 쓸 수 있습니다. 그래서 Mac에 작은 인증 프록시를 두고, 비밀키 헤더가 맞는 요청만 채팅·상태 확인 두 경로로 통과시켰습니다. Tailscale Funnel로는 이 프록시만 공개했고, 비밀키는 Vercel 서버에만 있어서 브라우저에는 Mac 주소와 키가 드러나지 않습니다."
   - question: "로컬 모델은 어떻게 골랐나요?"
     answer: "M1 Pro 16GB에서 돌릴 수 있는 한국어 모델 세 개(exaone3.5, qwen3.5, gemma4)를 실제 챗봇과 같은 프롬프트, 같은 질문 12개로 비교했습니다. 사실 정확도와 첫 글자까지 걸리는 시간을 가장 중요하게 봤고, 둘 다 가장 좋았던 gemma4:e4b로 정했습니다. 메모리를 9.4GB로 가장 많이 쓴다는 단점은 감수했습니다."
+  - question: "계획은 1주였는데 3일 만에 만들 수 있었던 작업 방식은 무엇인가요?"
+    answer: ""
+  - question: "Claude Code 같은 AI 도구를 개발에 어떻게 활용했나요?"
+    answer: ""
 ---
 
 ### 📱 AI 면접 챗봇 포트폴리오
