@@ -206,7 +206,7 @@
 - [x] 모델 확정: **gemma4:e4b**, 측정 결과는 `docs/benchmarks/local-llm-2026-10-16.md`에 기록 (README 반영은 D7)
 - [x] `keep_alive: -1`, 동시 처리 1개 설정 (프록시가 모든 요청에 `keep_alive: -1`을 붙이고, Ollama로는 한 번에 한 질문만 보냄)
 - [x] 인증 프록시 작성 (`local-llm/proxy.mjs`, `npm run llm:proxy`. 비밀키 헤더 검사, `POST /api/chat`·`GET /health`만 허용, 모델 고정, 127.0.0.1에서만 열림)
-- [x] Tailscale 관리 콘솔에서 MagicDNS·HTTPS 인증서 켜기 (공개 주소 `https://macbookpro.tail8daf57.ts.net`)
+- [x] Tailscale 관리 콘솔에서 MagicDNS·HTTPS 인증서 켜기 (공개 주소는 `.env.local`의 `LOCAL_LLM_URL`)
 - [x] Tailscale Funnel로 프록시 공개 (`tailscale funnel --bg 11435`, 직접 실행·승인), 외부 경로로 확인: 키 없음·틀린 키 401, Ollama API(`/api/tags`, `/api/pull`) 404, 올바른 키만 200
 - [x] 잠자기 방지, `launchd`로 부팅 시 자동 실행 (`sh local-llm/install-launchd.sh`: 프록시를 `caffeinate -s`로 감싸 전원 연결 중 잠자기 방지, 꺼지면 자동 재시작. Ollama는 brew services, Tailscale은 앱이 실행)
 

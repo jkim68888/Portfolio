@@ -11,7 +11,7 @@ stack: ["Next.js", "TypeScript", "Tailwind", "Ollama", "Claude API", "Upstash Re
 thumbnail: "/projects/portfolio-site/cover.jpg"
 # 프로젝트 목록 카드 오른쪽에 보이는 대표 화면
 preview: "/projects/portfolio-site/home-mobile.png"
-links: []
+links: [{"label": "GitHub", "url": "https://github.com/jkim68888/Portfolio"}]
 status: ""
 notionId: ""
 # 챗봇이 홈에서 받은 질문으로 이 프로젝트를 찾을 때 쓰는 별칭
