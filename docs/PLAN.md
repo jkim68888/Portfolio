@@ -227,7 +227,7 @@
 - [x] 엔진 인터페이스 정의: 두 엔진 모두 `({ system, messages, signal }) → 글자 조각 AsyncGenerator`, 응답 형식은 `src/lib/chat/protocol.ts` (NDJSON: meta → delta… → done/error)
 - [x] 로컬 엔진: Ollama 스트리밍 호출 (프록시 경유, 비밀키 헤더) — `src/lib/chat/local-engine.ts`
 - [x] 클라우드 엔진: `@anthropic-ai/sdk` 스트리밍, 시스템 프롬프트 캐싱, effort low — `src/lib/chat/cloud-engine.ts`
-- [x] 로컬 상태 확인 API (`/api/llm-status`): 타임아웃 1.5초, 결과 30초 캐시, `{ online, busy, model }`
+- [x] 로컬 상태 확인 API (`/api/llm-status`): 타임아웃 3초, 결과 캐시 온라인 30초·오프라인 5초(10/18 배포 직후 오프라인으로 잘못 보이던 문제로 1.5초·30초에서 조정), `{ online, busy, model }`
 - [x] `/api/chat`: 요청 엔진 확인 → 로컬 불가 시 자동으로 클라우드 → 스트림 앞에 `{ engine, model, fallbackReason }` 전송
 - [x] 로컬 호출 도중 연결이 끊기면 클라우드로 재시도 (`meta`를 `restart: true`로 한 번 더 보내고, UI는 받은 글을 버림)
 - [x] 시스템 프롬프트 생성 (`src/lib/chat/prompt.ts`, D1에 앞당겨 작성. `focusSlugs`로 엔진별 컨텍스트 조절)

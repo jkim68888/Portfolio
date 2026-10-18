@@ -4,8 +4,11 @@ import type { ChatMessage, LlmStatus } from "./protocol";
 
 export const LOCAL_MODEL = process.env.LOCAL_LLM_MODEL || "gemma4:e4b";
 
-const STATUS_TIMEOUT_MS = 1500;
-const STATUS_CACHE_MS = 30_000;
+// Vercel 서버에서 Funnel을 거쳐 Mac까지 처음 연결할 때(배포 직후 등) 1초를 넘기기도 해서 넉넉히 둔다.
+const STATUS_TIMEOUT_MS = 3000;
+// 온라인 결과는 오래 기억하고, 오프라인 결과는 잠깐의 실패일 수 있어 금방 다시 확인한다.
+const ONLINE_CACHE_MS = 30_000;
+const OFFLINE_CACHE_MS = 5_000;
 
 function config() {
   const url = process.env.LOCAL_LLM_URL?.replace(/\/$/, "");
@@ -38,7 +41,7 @@ export async function getLocalStatus({ fresh = false } = {}): Promise<LlmStatus>
       // 시간 초과·연결 실패는 오프라인으로 본다.
     }
   }
-  cachedStatus = { value, expiresAt: Date.now() + STATUS_CACHE_MS };
+  cachedStatus = { value, expiresAt: Date.now() + (value.online ? ONLINE_CACHE_MS : OFFLINE_CACHE_MS) };
   return value;
 }
 

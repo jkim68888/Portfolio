@@ -30,7 +30,7 @@
 ```
 [브라우저] ──▶ [Vercel: /api/chat]
                   │ engine = local | cloud
-                  │ 로컬 상태 확인 (타임아웃 1.5초, 결과 30초 캐시)
+                  │ 로컬 상태 확인 (타임아웃 3초, 결과 온라인 30초·오프라인 5초 캐시)
                   ├─▶ 로컬 가능 → Tailscale Funnel ─▶ [Mac: 인증 프록시 ─▶ Ollama]
                   └─▶ 로컬 불가 / cloud 선택 → [Claude API (Haiku 5.5)]
                   │

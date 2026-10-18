@@ -29,9 +29,9 @@ const ENGINE_OPTIONS: { value: EngineName; icon: string; label: string }[] = [
 ];
 
 const FALLBACK_NOTICES: Record<FallbackReason, string> = {
-  local_not_configured: "로컬 LLM이 오프라인이라 클라우드로 답변합니다.",
-  local_offline: "로컬 LLM이 오프라인이라 클라우드로 답변합니다.",
-  local_interrupted: "로컬 LLM 연결이 끊겨 클라우드로 다시 답변합니다.",
+  local_not_configured: "로컬 LLM이 오프라인이라 Claude로 답변합니다.",
+  local_offline: "로컬 LLM이 오프라인이라 Claude로 답변합니다.",
+  local_interrupted: "로컬 LLM 연결이 끊겨 Claude로 다시 답변합니다.",
 };
 
 const MODEL_NAMES: Record<string, string> = { "claude-haiku-5-5": "Claude Haiku 5.5" };
@@ -56,7 +56,7 @@ function StatusBadge({ status }: { status: LlmStatus | undefined }) {
   const { dot, text } = !status
     ? { dot: "bg-gray-300", text: "로컬 LLM 상태 확인 중" }
     : !status.online
-      ? { dot: "bg-gray-300", text: "로컬 LLM 오프라인 · 클라우드로 답변" }
+      ? { dot: "bg-gray-300", text: "로컬 LLM 오프라인 · Claude로 답변" }
       : status.busy
         ? { dot: "bg-amber-400", text: "로컬 LLM 다른 질문 처리 중" }
         : { dot: "bg-emerald-500", text: "로컬 LLM 온라인" };
