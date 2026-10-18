@@ -28,6 +28,7 @@ const CATEGORY_NAMES: Record<string, string> = {
   company: "회사",
   "swift-side": "Swift 사이드",
   "rn-side": "React Native 사이드",
+  "web-side": "웹 사이드",
 };
 
 // 정해진 문장으로 답해야 하는 경우. 작은 모델이 문장을 바꾸지 않도록 그대로 인용하게 한다.

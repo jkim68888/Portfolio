@@ -12,6 +12,7 @@ export const CATEGORY_LABELS = {
   company: "회사 프로젝트",
   "swift-side": "Swift 사이드 프로젝트",
   "rn-side": "React Native 사이드 프로젝트",
+  "web-side": "웹 사이드 프로젝트",
 } as const;
 
 const projectSchema = z.object({
