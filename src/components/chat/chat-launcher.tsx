@@ -9,11 +9,12 @@ import { useChat } from "./chat-provider";
 export function ChatLauncher() {
   const { open, openChat, projects, pageProjectSlug } = useChat();
   const pageProject = projects.find((project) => project.slug === pageProjectSlug);
-  if (open) return null;
   return (
+    // 패널이 열려 있는 동안에도 지우지 않고 숨기기만 한다. 패널을 닫으면 이 버튼으로 포커스를 돌려줘야 해서다.
     <button
       type="button"
       onClick={openChat}
+      hidden={open}
       className="group fixed top-1/2 right-3 z-40 flex -translate-y-1/2 cursor-pointer flex-col items-center gap-2 sm:right-6"
     >
       <span className="relative">
