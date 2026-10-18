@@ -322,7 +322,8 @@ export function ChatPanel() {
                 rows={1}
                 maxLength={MAX_MESSAGE_LENGTH}
                 placeholder="프로젝트에 대해 물어보세요"
-                className="[field-sizing:content] max-h-32 min-h-11 flex-1 resize-none rounded-xl border border-gray-200 px-3 py-2.5 text-sm focus:border-violet-400 focus:ring-2 focus:ring-violet-100 focus:outline-none"
+                // iOS는 글자가 16px보다 작은 입력창에 포커스가 가면 화면을 확대하므로, 모바일에서는 16px(text-base)로 둔다.
+                className="[field-sizing:content] max-h-32 min-h-11 flex-1 resize-none rounded-xl border border-gray-200 px-3 py-2.5 text-base focus:border-violet-400 focus:ring-2 focus:ring-violet-100 focus:outline-none sm:text-sm"
               />
               {busy ? (
                 <button
