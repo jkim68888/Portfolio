@@ -1,20 +1,15 @@
 import type { Metadata } from "next";
 import { Geist_Mono } from "next/font/google";
-import localFont from "next/font/local";
 import { ChatLauncher } from "@/components/chat/chat-launcher";
 import { ChatPanel } from "@/components/chat/chat-panel";
 import { ChatProvider } from "@/components/chat/chat-provider";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { getProjects } from "@/lib/projects";
+// 한글 전체가 든 가변 글꼴(2MB)을 통째로 받으면 모바일 첫 화면이 크게 늦어진다.
+// 글자 범위별로 나뉜 파일을 쓰면 브라우저가 페이지에 쓰인 글자 범위만 받는다.
+import "pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css";
 import "./globals.css";
-
-const pretendard = localFont({
-  src: "../../node_modules/pretendard/dist/web/variable/woff2/PretendardVariable.woff2",
-  variable: "--font-pretendard",
-  weight: "45 920",
-  display: "swap",
-});
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
@@ -37,7 +32,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
   }));
 
   return (
-    <html lang="ko" className={`${pretendard.variable} ${geistMono.variable} h-full`}>
+    <html lang="ko" className={`${geistMono.variable} h-full`}>
       <body className="flex min-h-full flex-col font-sans">
         <a
           href="#main"

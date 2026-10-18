@@ -12,13 +12,15 @@ export function FeatureGallery({ items, imageSizes }: FeatureGalleryProps) {
         const size = item.image ? imageSizes[item.image.src] : undefined;
         // 웹 화면처럼 가로로 긴 스크린샷은 두 칸을 차지하게 한다.
         const wide = size ? size.width > size.height : false;
+        // 바로 아래 설명이 이미지 설명(alt)과 같은 말이면, 화면 낭독기가 두 번 읽지 않도록 alt를 비운다.
+        const alt = item.image && item.content.includes(item.image.alt) ? "" : (item.image?.alt ?? "");
         return (
           <li key={item.image?.src ?? index} className={wide ? "col-span-2" : undefined}>
             <figure>
               {item.image && size && (
                 <Image
                   src={item.image.src}
-                  alt={item.image.alt}
+                  alt={alt}
                   width={size.width}
                   height={size.height}
                   sizes={wide ? "(min-width: 1024px) 460px, 90vw" : "(min-width: 1024px) 220px, 45vw"}

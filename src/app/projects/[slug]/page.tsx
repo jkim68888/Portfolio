@@ -139,7 +139,7 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
       <dl className="mt-10 grid gap-x-8 gap-y-5 rounded-2xl bg-gray-100 p-6 sm:grid-cols-[auto_1fr]">
         {facts.map((fact) => (
           <div key={fact.label} className="contents">
-            <dt className="text-sm font-semibold text-gray-500">{fact.label}</dt>
+            <dt className="text-sm font-semibold text-gray-600">{fact.label}</dt>
             <dd className="-mt-4 text-sm leading-relaxed text-gray-800 sm:mt-0">{fact.value}</dd>
           </div>
         ))}
