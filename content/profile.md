@@ -27,11 +27,13 @@ careers:
     projects: ["picaloca", "saving-hanaro"]
 skills:
   - group: "Web"
-    items: ["React", "TypeScript", "Vite", "TanStack Router", "TanStack Query", "Zustand", "Tailwind CSS", "React Hook Form", "Zod"]
+    items: ["React", "Next.js", "TypeScript", "Vite", "TanStack Router", "TanStack Query", "Zustand", "Tailwind CSS", "React Hook Form", "Zod"]
   - group: "Mobile"
     items: ["React Native", "Expo", "Swift", "UIKit", "SwiftUI", "RxSwift", "Combine"]
+  - group: "Infra"
+    items: ["AWS S3", "CloudFront", "Vercel"]
   - group: "Tools"
-    items: ["Figma", "Git / GitHub", "AWS S3 · CloudFront", "Firebase Crashlytics"]
+    items: ["Figma", "Photoshop", "Git", "Firebase Crashlytics", "Claude Code"]
 ---
 
 iOS 개발자로 시작해 지도형 SNS, 핀테크, 게임 커뮤니티 앱을 만들었고, 웹뷰 기반 하이브리드 앱을 개발하며 웹과 네이티브의 경계를 다뤄 왔습니다. 최근에는 React와 TypeScript로 AI 모의면접 웹 서비스를 기획·디자인부터 배포까지 프론트엔드 전체를 맡아 만들었습니다.

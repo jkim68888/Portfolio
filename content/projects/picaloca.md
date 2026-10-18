@@ -109,20 +109,8 @@ interviewQA:
 > - 커스터마이징 제약
 >   - Naver는 마커 이미지, 오버레이, 뷰 UI 커스터마이징에 유연하나, Google Maps는 커스터마이징에 어려움을 겪음.
 >   - ex. 마커 위에 뷰 직접 올리는 과정
-> ```swift
-> // Naver Map SDK
-let marker = NMFMarker()
-marker.iconView = myCustomView  // UIView를 그대로 적용 가능
-
-// Google Maps SDK
-extension ViewController: GMUClusterRendererDelegate {
-    func renderer(_ renderer: GMUClusterRenderer, 
-							    markerFor object: Any) -> GMSMarker? {
-		// GMUClusterRendererDelegate 를 상속받아 
-		// renderer 함수에서 `마커`와 `클러스터마커`에 
-		// UIImageView를 생성하여 position을 세팅해줌.					    
-}
-> ```
+>     - 네이버 지도는 마커에 직접 만든 UIView를 그대로 붙일 수 있었음
+>     - 구글맵은 그게 안 돼서, 클러스터 렌더러의 델리게이트에서 일반 마커와 클러스터 마커마다 이미지 뷰를 만들고 위치를 직접 지정하는 방식으로 다시 구현
 
 #### 마커 클러스터링
 
@@ -140,16 +128,7 @@ extension ViewController: GMUClusterRendererDelegate {
 >   - 좌표 기반으로 자동으로 마커를 그룹화하고 줌 레벨에 따라 마커 수를 조절함
 > 2. 클러스터 마커 대표 이미지 **커스터마이징**
 >   - 단순한 숫자 버블이 아닌, **클러스터에 포함된 게시물 중 대표 이미지를 동적으로 설정**
-> ```swift
-> class CustomClusterRenderer: GMUDefaultClusterRenderer {
-    override func renderer(_ renderer: GMUClusterRenderer, 
-											    willRenderMarker marker: GMSMarker) {
-        if let cluster = marker.userData as? GMUCluster {
-            // cluster.items 중 하나를 대표 이미지로 선택하여 마커에 반영
-        }
-    }
-}
-> ```
+>   - 기본 클러스터 렌더러를 상속한 커스텀 렌더러를 만들고, 마커를 그리기 직전에 클러스터 안 게시물 중 하나를 골라 대표 이미지로 반영
 
 > 효과
 > 마커 수 감소로 지도 움직임이 **부드럽고 자연스러워짐**
@@ -221,16 +200,8 @@ extension ViewController: GMUClusterRendererDelegate {
 
 > 포맷팅 문자열 처리
 > 사용자 이름 등 동적 텍스트가 필요한 경우 `String(format:)` 방식으로 처리
-> ```swift
-> let welcome = "welcome_user".localized(with: userName)
-> ```
-> ```plain text
-> // en.lproj
-"welcome_user" = "Welcome, %@!";
-
-// ko.lproj
-"welcome_user" = "%@님, 환영합니다!";
-> ```
+> - 언어마다 어순이 달라서, 번역 문장 안에 이름이 들어갈 자리를 표시해 두고 언어별로 위치만 다르게 지정
+>   - ex. 영어는 "Welcome, 지현!", 한국어는 "지현님, 환영합니다!"
 
 #### 동영상 편집 기능
 
@@ -250,21 +221,13 @@ extension ViewController: GMUClusterRendererDelegate {
 
 > 커스텀 에러 정의
 > - HTTP 상태 코드를 기반으로 서버 에러를 명확히 분리
+> - 400(잘못된 요청), 401(인증 실패), 500(서버 오류)을 각각 에러 타입으로 정의
 > - 추후 로직에서 분기 처리가 용이해짐
-> ```swift
-> enum ServerError: String, Error {
-    case badRequest = "400"
-    case unAuthorized = "401"
-    case networkError = "500"
-}
-> ```
 
 > Result 타입으로 성공/실패 명확화
 > - 에러를 `onError`로만 넘기지 않고 `Result.failure`를 통해 **정제된 형태로 전달**
 > - 통신 자체 실패 (`onError`) 와 응답 실패 (`failure(...)`)를 분리하여 **에러 유형에 따른 처리** 가능
-> ```swift
-> Observable<Result<BaseResponse<UserProfileData>, ServerError>>
-> ```
+> - API 응답을 "성공 데이터 또는 서버 에러" 형태로 감싸서 Observable로 전달
 
 > 키 포인트
 > - `onNext` 에서 서버 응답 에러에 따른 로직 구현

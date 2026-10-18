@@ -10,9 +10,9 @@ export function RetroAccordion({ items, imageSizes }: RetroAccordionProps) {
     <div className="divide-y divide-zinc-100 overflow-hidden rounded-2xl border border-gray-200 bg-white/80">
       {items.map((item, index) => (
         <details key={item.title} open={index === 0} className="group">
-          <summary className="hover:bg-accent-soft group-open:bg-accent-soft group-open:text-accent flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 font-semibold transition-colors [&::-webkit-details-marker]:hidden">
+          <summary className="group/summary hover:bg-blue-100 group-open:bg-accent-soft group-open:text-accent flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 font-semibold transition-colors [&::-webkit-details-marker]:hidden">
             {item.title}
-            <span aria-hidden className="text-accent transition group-open:rotate-180">
+            <span aria-hidden className="text-accent transition-transform duration-200 group-open:rotate-180 group-hover/summary:rotate-180">
               ▾
             </span>
           </summary>

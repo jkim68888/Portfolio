@@ -101,9 +101,15 @@ interviewQA:
 ![모두의 입시 AI 화면 4](/projects/modoo-ipsi-ai/04.png)
 ![모두의 입시 AI 화면 5](/projects/modoo-ipsi-ai/05.png)
 ![모두의 입시 AI 화면 6](/projects/modoo-ipsi-ai/06.png)
+![마이페이지 구독 플랜 화면](/projects/modoo-ipsi-ai/16.png)
+- B2C 오픈과 함께 추가한 마이페이지 구독 플랜·이용 상태
+- 이용권이 있으면 구매 버튼을 노출하지 않아 중복 결제 방지
+![토스페이먼츠 결제 화면](/projects/modoo-ipsi-ai/17.png)
+- 토스페이먼츠 결제위젯 SDK v2 연동 (테스트 환경 화면)
 ![AI 모의면접 및 질답생성 기능](/projects/modoo-ipsi-ai/07.png)
-![AI 모의면접 및 질답생성 기능](/projects/modoo-ipsi-ai/08.png)
 - AI 모의면접 및 질답생성 기능
+- 장시간 작업의 비동기화
+
 ![진로적성 검사 질문 화면](/projects/modoo-ipsi-ai/09.jpg)
 - 진로적성 검사 질문 화면
 - 질문의 답변에 따라 프론트에서 결과 도출 (트리 형식으로 로직 구현)
@@ -121,11 +127,3 @@ interviewQA:
 ![10개씩 페이징 처리](/projects/modoo-ipsi-ai/14.jpg)
 - 10개씩 페이징 처리
 - 검색바 구현
-![그 외의 로그인/회원가입/마이페이지 구현](/projects/modoo-ipsi-ai/15.jpg)
-- 그 외의 로그인/회원가입/마이페이지 구현
-- 모든 메뉴 화면 및 기능 구현
-![마이페이지 구독 플랜 화면](/projects/modoo-ipsi-ai/16.png)
-- B2C 오픈과 함께 추가한 마이페이지 구독 플랜·이용 상태
-- 이용권이 있으면 구매 버튼을 노출하지 않아 중복 결제 방지
-![토스페이먼츠 결제 화면](/projects/modoo-ipsi-ai/17.png)
-- 토스페이먼츠 결제위젯 SDK v2 연동 (테스트 환경 화면)

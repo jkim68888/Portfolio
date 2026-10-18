@@ -57,75 +57,25 @@ interviewQA:
 #### JS 브릿지
 
 > **WKScriptMessageHandler 활용**
-> ```swift
-> let contentController = WKUserContentController()
-let configuration = WKWebViewConfiguration()
-    
-// 메시지 핸들러 등록    
-// JavaScript에서 window.webkit.messageHandlers.appleLoginBtnClick.postMessage()로 호출 가능
-contentController.add(self, name: "appleLoginBtnClick")
-        
-configuration.userContentController = contentController
-defaultWebView = WKWebView(frame: .zero, configuration: configuration)
-> ```
->
+> - 웹뷰를 만들 때 애플 로그인용 메시지 핸들러를 등록해, 웹에서 네이티브로 메시지를 보낼 수 있는 통로를 만듦
+
 > 플로우1. JS → Swift
-> ```javascript
-> // 웹페이지에서 애플 로그인 버튼 클릭 시
-function handleAppleLogin() {
-    window.webkit.messageHandlers.appleLoginBtnClick.postMessage({
-		    // 예시 데이터
-        action: 'startAppleLogin',
-        redirectUrl: 'https://example.com/callback'
-    });
-}
-> ```
->
+> - 웹에서 애플 로그인 버튼을 누르면, 등록해 둔 핸들러 이름으로 네이티브에 메시지를 보냄
+> - 앱은 메시지 이름을 확인한 뒤, 함께 넘어온 데이터를 가지고 애플 로그인을 시작함
+
 > 플로우2. Swift → JS
-> ```swift
-> extension ViewController: WKScriptMessageHandler {
-    func userContentController(_ userContentController: WKUserContentController, 
-                              didReceive message: WKScriptMessage) {
-        if message.name == "appleLoginBtnClick" {
-            // 애플 로그인 처리
-            // JS에서 보낸 데이터가 message.body에 담겨있음
-            handleAppleLogin(message: message.body)
-        }
-    }
-    
-    private func handleAppleLogin(message: Any) {
-        // AuthenticationServices 프레임워크를 사용한 애플 로그인 구현
-        
-        // 로그인 완료 후 결과를 웹으로 전달
-        self.webView.evaluateJavaScript("responseToken(\(jsonString))") { result, error in
-            guard error == nil else {
-                print(error as Any)
-                return
-            }
-        }
-    }
-}
-> ```
+> - 애플 로그인이 끝나면 `evaluateJavaScript`로 웹 쪽 함수를 호출해 결과 토큰을 웹에 전달
+> - 웹은 받은 토큰으로 로그인 처리를 이어감
 
 #### 쿠키 동기화
 
-> WKHTTPCookieStore 활용
-> ```swift
-> extension WKWebView {
-    private var httpCookieStore: WKHTTPCookieStore {
-        return WKWebsiteDataStore.default().httpCookieStore
-    }
+> 작업 계기
+> - 마케팅 링크를 타고 들어온 유저를 구분해 마케팅 성과 측정에 활용해야 했음
 
-    // 모든 쿠키 가져오기
-    httpCookieStore.getAllCookies()
-    
-    // 쿠키 저장
-    httpCookieStore.setCookie(cookie)
-    
-    // 쿠키 제거
-    httpCookieStore.delete(cookie)
-}
-> ```
+> WKHTTPCookieStore 활용
+> - 웹뷰의 기본 데이터 저장소에 있는 쿠키 저장소를 이용해 쿠키를 조회·저장·삭제하는 기능을 WKWebView 확장으로 묶어 재사용
+> - 마케팅 링크로 들어온 유저라는 정보를 쿠키에 저장
+> - 딥링크로 앱이 열리면 쿠키에서 해당 값을 조회해, 마케팅 유입 유저인지 판단하는 데 활용
 
 ---
 
