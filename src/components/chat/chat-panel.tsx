@@ -1,11 +1,18 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { MarkdownContent } from "@/components/markdown";
-import { MAX_MESSAGE_LENGTH, type EngineName, type FallbackReason, type LlmStatus } from "@/lib/chat/protocol";
+import {
+  HISTORY_TTL_DAYS,
+  MAX_MESSAGE_LENGTH,
+  type EngineName,
+  type FallbackReason,
+  type LlmStatus,
+} from "@/lib/chat/protocol";
+import { ChatHistory } from "./chat-history";
 import { useChat } from "./chat-provider";
-import { useChatSession, useLlmStatus, type UiMessage } from "./use-chat-session";
+import { useLlmStatus, type UiMessage } from "./use-chat-session";
 
 // 로컬 LLM의 첫 글자가 이보다 늦으면 빠른 답변으로 전환하라고 안내한다.
 const SLOW_FIRST_TOKEN_MS = 5000;
@@ -117,8 +124,15 @@ function AssistantMessage({ message, now }: { message: UiMessage; now: number })
 }
 
 export function ChatPanel() {
-  const { open, projectSlug, projects, closeChat, clearProject } = useChat();
-  const { messages, engine, busy, send, stop, changeEngine, reset } = useChatSession(projectSlug);
+  const { open, projectSlug, projects, thread, engine, busy, closeChat, send, stop, changeEngine, reset } = useChat();
+  const messages = useMemo(() => thread?.messages ?? [], [thread]);
+  // 대화 화면과 채팅 내역 화면을 오간다. 다른 페이지의 대화로 바뀌면 대화 화면으로 돌아간다.
+  const [viewState, setViewState] = useState<{ view: "chat" | "history"; projectSlug: string | undefined }>({
+    view: "chat",
+    projectSlug,
+  });
+  const view = viewState.projectSlug === projectSlug ? viewState.view : "chat";
+  const setView = (next: "chat" | "history") => setViewState({ view: next, projectSlug });
   const status = useLlmStatus(open, busy);
   const now = useNow(open && busy);
   const [input, setInput] = useState("");
@@ -148,11 +162,11 @@ export function ChatPanel() {
     };
   }, [open, closeChat]);
 
-  // 새 글이 오면 맨 아래로 내린다.
+  // 새 글이 오거나 대화 화면으로 돌아오면 맨 아래로 내린다.
   useEffect(() => {
     const log = logRef.current;
     if (log) log.scrollTop = log.scrollHeight;
-  }, [messages]);
+  }, [messages, view]);
 
   if (!open) return null;
 
@@ -179,7 +193,15 @@ export function ChatPanel() {
             </h2>
             <StatusBadge status={status} />
           </div>
-          {messages.length > 0 && (
+          <button
+            type="button"
+            onClick={() => setView(view === "chat" ? "history" : "chat")}
+            aria-pressed={view === "history"}
+            className="cursor-pointer rounded-md px-2 py-1.5 text-xs font-medium text-zinc-500 hover:bg-gray-100 hover:text-zinc-800 aria-pressed:bg-violet-50 aria-pressed:text-violet-700"
+          >
+            {view === "chat" ? "채팅 내역" : "대화로 돌아가기"}
+          </button>
+          {view === "chat" && messages.length > 0 && (
             <button
               type="button"
               onClick={reset}
@@ -227,106 +249,106 @@ export function ChatPanel() {
           </p>
         )}
 
-        {project && (
-          <p className="mt-3 flex items-center gap-2 text-xs text-zinc-600">
+        {view === "chat" && (
+          <p className="mt-3 text-xs">
             <span className="rounded-full bg-violet-50 px-2.5 py-1 font-medium text-violet-700">
-              {project.title}에 대해 질문 중
+              {project ? project.title : "김지현"}에 대해 질문 중
             </span>
-            <button
-              type="button"
-              onClick={clearProject}
-              className="cursor-pointer text-zinc-400 underline hover:text-zinc-700"
-            >
-              전체 프로젝트로 묻기
-            </button>
           </p>
         )}
       </header>
 
-      <div ref={logRef} role="log" aria-label="대화 내용" className="flex-1 space-y-4 overflow-y-auto px-4 py-5">
-        {messages.length === 0 && (
-          <div>
-            <p className="text-sm leading-relaxed text-zinc-600">
-              안녕하세요, 김지현입니다. 포트폴리오에 담긴 프로젝트와 경험에 대해 편하게 물어봐 주세요.
-            </p>
-            <ul className="mt-4 flex flex-col items-start gap-2" aria-label="추천 질문">
-              {suggestions.map((question) => (
-                <li key={question}>
-                  <button
-                    type="button"
-                    onClick={() => submit(question)}
-                    className="cursor-pointer rounded-full border border-violet-200 bg-white px-3 py-1.5 text-left text-sm text-violet-700 transition hover:bg-violet-50"
-                  >
-                    {question}
-                  </button>
-                </li>
-              ))}
-            </ul>
+      {view === "history" ? (
+        <ChatHistory onOpened={() => setView("chat")} />
+      ) : (
+        <>
+          <div ref={logRef} role="log" aria-label="대화 내용" className="flex-1 space-y-4 overflow-y-auto px-4 py-5">
+            {messages.length === 0 && (
+              <div>
+                <p className="text-sm leading-relaxed text-zinc-600">
+                  안녕하세요, 김지현입니다. 포트폴리오에 담긴 프로젝트와 경험에 대해 편하게 물어봐 주세요.
+                </p>
+                <ul className="mt-4 flex flex-col items-start gap-2" aria-label="추천 질문">
+                  {suggestions.map((question) => (
+                    <li key={question}>
+                      <button
+                        type="button"
+                        onClick={() => submit(question)}
+                        className="cursor-pointer rounded-full border border-violet-200 bg-white px-3 py-1.5 text-left text-sm text-violet-700 transition hover:bg-violet-50"
+                      >
+                        {question}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {messages.map((message) =>
+              message.role === "user" ? (
+                <div key={message.id} className="flex justify-end">
+                  <p className="max-w-[85%] rounded-2xl rounded-tr-sm bg-violet-600 px-4 py-2.5 text-sm whitespace-pre-wrap text-white">
+                    {message.content}
+                  </p>
+                </div>
+              ) : (
+                <AssistantMessage key={message.id} message={message} now={now} />
+              ),
+            )}
           </div>
-        )}
-        {messages.map((message) =>
-          message.role === "user" ? (
-            <div key={message.id} className="flex justify-end">
-              <p className="max-w-[85%] rounded-2xl rounded-tr-sm bg-violet-600 px-4 py-2.5 text-sm whitespace-pre-wrap text-white">
-                {message.content}
-              </p>
-            </div>
-          ) : (
-            <AssistantMessage key={message.id} message={message} now={now} />
-          ),
-        )}
-      </div>
 
-      <footer className="border-t border-gray-100 px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
-        <form
-          onSubmit={(event) => {
-            event.preventDefault();
-            submit(input);
-          }}
-          className="flex items-end gap-2"
-        >
-          <label htmlFor="chat-input" className="sr-only">
-            질문 입력
-          </label>
-          <textarea
-            id="chat-input"
-            ref={inputRef}
-            value={input}
-            onChange={(event) => setInput(event.target.value)}
-            onKeyDown={(event) => {
-              // 한글 조합 중 Enter는 글자 확정이라 보내지 않는다. Shift+Enter는 줄바꿈.
-              if (event.key === "Enter" && !event.shiftKey && !event.nativeEvent.isComposing) {
+          <footer className="border-t border-gray-100 px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
+            <form
+              onSubmit={(event) => {
                 event.preventDefault();
                 submit(input);
-              }
-            }}
-            rows={1}
-            maxLength={MAX_MESSAGE_LENGTH}
-            placeholder="프로젝트에 대해 물어보세요"
-            className="[field-sizing:content] max-h-32 min-h-11 flex-1 resize-none rounded-xl border border-gray-200 px-3 py-2.5 text-sm focus:border-violet-400 focus:ring-2 focus:ring-violet-100 focus:outline-none"
-          />
-          {busy ? (
-            <button
-              type="button"
-              onClick={stop}
-              className="h-11 shrink-0 cursor-pointer rounded-xl bg-zinc-800 px-4 text-sm font-semibold text-white hover:bg-zinc-700"
+              }}
+              className="flex items-end gap-2"
             >
-              중단
-            </button>
-          ) : (
-            <button
-              type="submit"
-              disabled={!input.trim()}
-              className="h-11 shrink-0 cursor-pointer rounded-xl bg-violet-600 px-4 text-sm font-semibold text-white transition hover:bg-violet-700 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-400"
-            >
-              보내기
-            </button>
-          )}
-        </form>
-        <p className="mt-2 text-[11px] leading-snug text-zinc-400">
-          AI가 포트폴리오 내용을 바탕으로 답변합니다. 대화 내용은 개선을 위해 저장됩니다.
-        </p>
-      </footer>
+              <label htmlFor="chat-input" className="sr-only">
+                질문 입력
+              </label>
+              <textarea
+                id="chat-input"
+                ref={inputRef}
+                value={input}
+                onChange={(event) => setInput(event.target.value)}
+                onKeyDown={(event) => {
+                  // 한글 조합 중 Enter는 글자 확정이라 보내지 않는다. Shift+Enter는 줄바꿈.
+                  if (event.key === "Enter" && !event.shiftKey && !event.nativeEvent.isComposing) {
+                    event.preventDefault();
+                    submit(input);
+                  }
+                }}
+                rows={1}
+                maxLength={MAX_MESSAGE_LENGTH}
+                placeholder="프로젝트에 대해 물어보세요"
+                className="[field-sizing:content] max-h-32 min-h-11 flex-1 resize-none rounded-xl border border-gray-200 px-3 py-2.5 text-sm focus:border-violet-400 focus:ring-2 focus:ring-violet-100 focus:outline-none"
+              />
+              {busy ? (
+                <button
+                  type="button"
+                  onClick={stop}
+                  className="h-11 shrink-0 cursor-pointer rounded-xl bg-zinc-800 px-4 text-sm font-semibold text-white hover:bg-zinc-700"
+                >
+                  중단
+                </button>
+              ) : (
+                <button
+                  type="submit"
+                  disabled={!input.trim()}
+                  className="h-11 shrink-0 cursor-pointer rounded-xl bg-violet-600 px-4 text-sm font-semibold text-white transition hover:bg-violet-700 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-400"
+                >
+                  보내기
+                </button>
+              )}
+            </form>
+            <p className="mt-2 text-[11px] leading-snug text-zinc-400">
+              AI가 포트폴리오 내용을 바탕으로 답변합니다. 대화 내용은 개선을 위해 저장되고, 채팅 내역은 마지막 질문 후{" "}
+              {HISTORY_TTL_DAYS}일 동안 이 브라우저에서 다시 볼 수 있어요.
+            </p>
+          </footer>
+        </>
+      )}
     </section>
   );
 }

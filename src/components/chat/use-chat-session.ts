@@ -8,6 +8,7 @@ import {
   type ChatMessage,
   type EngineName,
   type FallbackReason,
+  type HistoryTurn,
   type LlmStatus,
 } from "@/lib/chat/protocol";
 
@@ -37,26 +38,103 @@ function toHistory(messages: UiMessage[]): ChatMessage[] {
     .slice(-MAX_MESSAGES);
 }
 
-export function useChatSession(projectSlug: string | undefined) {
-  const [messages, setMessages] = useState<UiMessage[]>([]);
-  const [engine, setEngine] = useState<EngineName>("local");
-  const abortRef = useRef<AbortController | undefined>(undefined);
-  // 답변 도중 엔진을 바꾸면 같은 질문을 다시 보내야 해서, 진행 중인 요청의 대화를 기억한다.
-  const pendingRef = useRef<{ history: ChatMessage[]; assistantId: string } | undefined>(undefined);
+// 대화는 페이지마다 따로 둔다. 상세 페이지는 그 프로젝트 slug, 홈은 "김지현" 대화(ABOUT_KEY).
+export const ABOUT_KEY = "about";
+export const threadKey = (projectSlug: string | undefined) => projectSlug ?? ABOUT_KEY;
 
-  const updateMessage = useCallback((id: string, patch: (message: UiMessage) => Partial<UiMessage>) => {
-    setMessages((current) =>
-      current.map((message) => (message.id === id ? { ...message, ...patch(message) } : message)),
-    );
+export type Thread = {
+  // 채팅 내역(Redis)에서 대화를 묶는 ID. 새 대화를 시작하면 새로 만든다.
+  conversationId: string;
+  projectSlug: string | undefined;
+  messages: UiMessage[];
+};
+
+type Pending = { controller: AbortController; history: ChatMessage[]; assistantId: string };
+
+// 탭을 닫기 전까지는 새로고침해도 쓰던 대화가 남도록 sessionStorage에 둔다.
+const THREADS_STORAGE_KEY = "chat:threads";
+// 채팅 내역을 찾는 방문자 ID. 탭을 닫았다가 다시 와도 같은 브라우저면 내역이 보이도록 localStorage에 둔다.
+const VISITOR_STORAGE_KEY = "chat:visitor-id";
+
+let memoryVisitorId: string | undefined;
+export function getVisitorId() {
+  try {
+    const saved = localStorage.getItem(VISITOR_STORAGE_KEY);
+    if (saved) return saved;
+    const created = crypto.randomUUID();
+    localStorage.setItem(VISITOR_STORAGE_KEY, created);
+    return created;
+  } catch {
+    // 저장소를 쓸 수 없는 환경(일부 시크릿 모드 등)에서는 이 탭에서만 쓴다.
+    memoryVisitorId ??= crypto.randomUUID();
+    return memoryVisitorId;
+  }
+}
+
+const newThread = (projectSlug: string | undefined): Thread => ({
+  conversationId: crypto.randomUUID(),
+  projectSlug,
+  messages: [],
+});
+
+function restoreThreads(): Record<string, Thread> {
+  try {
+    const saved = JSON.parse(sessionStorage.getItem(THREADS_STORAGE_KEY) ?? "{}") as Record<string, Thread>;
+    // 새로고침 직전에 받던 답변은 이어 받을 수 없으므로 중단된 것으로 표시한다.
+    for (const thread of Object.values(saved)) {
+      thread.messages = thread.messages.map((message) =>
+        message.status === "waiting" || message.status === "streaming" ? { ...message, status: "stopped" } : message,
+      );
+    }
+    return saved;
+  } catch {
+    return {};
+  }
+}
+
+export function useChatThreads() {
+  // 서버 렌더링 때는 저장소가 없어 빈 값이고, 대화는 패널을 연 뒤에만 그리므로 화면이 어긋나지 않는다.
+  const [threads, setThreads] = useState<Record<string, Thread>>(() =>
+    typeof window === "undefined" ? {} : restoreThreads(),
+  );
+  const [engine, setEngine] = useState<EngineName>("local");
+  // 비동기로 답변을 받는 동안 최신 대화를 읽기 위해 둔다.
+  const threadsRef = useRef(threads);
+  // 대화마다 진행 중인 요청. 답변 도중 다른 페이지로 옮겨도 원래 대화에서 끝까지 받는다.
+  const pendingRef = useRef(new Map<string, Pending>());
+
+  useEffect(() => {
+    threadsRef.current = threads;
+    try {
+      sessionStorage.setItem(THREADS_STORAGE_KEY, JSON.stringify(threads));
+    } catch {
+      // 저장하지 못해도 이 탭에서는 계속 쓸 수 있다.
+    }
+  }, [threads]);
+
+  const updateThread = useCallback((key: string, patch: (thread: Thread) => Thread) => {
+    setThreads((current) => (current[key] ? { ...current, [key]: patch(current[key]) } : current));
   }, []);
 
+  const updateMessage = useCallback(
+    (key: string, id: string, patch: (message: UiMessage) => Partial<UiMessage>) => {
+      updateThread(key, (thread) => ({
+        ...thread,
+        messages: thread.messages.map((message) => (message.id === id ? { ...message, ...patch(message) } : message)),
+      }));
+    },
+    [updateThread],
+  );
+
   const run = useCallback(
-    async (history: ChatMessage[], assistantId: string, requestEngine: EngineName) => {
-      abortRef.current?.abort();
+    async (key: string, history: ChatMessage[], assistantId: string, requestEngine: EngineName) => {
+      pendingRef.current.get(key)?.controller.abort();
       const controller = new AbortController();
-      abortRef.current = controller;
-      pendingRef.current = { history, assistantId };
-      updateMessage(assistantId, () => ({
+      const pending = { controller, history, assistantId };
+      pendingRef.current.set(key, pending);
+      const thread = threadsRef.current[key];
+      const update = (patch: (message: UiMessage) => Partial<UiMessage>) => updateMessage(key, assistantId, patch);
+      update(() => ({
         content: "",
         status: "waiting",
         engine: requestEngine,
@@ -66,12 +144,18 @@ export function useChatSession(projectSlug: string | undefined) {
         totalMs: undefined,
       }));
 
-      const fail = (content: string) => updateMessage(assistantId, () => ({ status: "error", content }));
+      const fail = (content: string) => update(() => ({ status: "error", content }));
       try {
         const res = await fetch("/api/chat", {
           method: "POST",
           headers: { "content-type": "application/json" },
-          body: JSON.stringify({ engine: requestEngine, projectSlug, messages: history }),
+          body: JSON.stringify({
+            engine: requestEngine,
+            projectSlug: thread?.projectSlug,
+            visitorId: getVisitorId(),
+            conversationId: thread?.conversationId,
+            messages: history,
+          }),
           signal: controller.signal,
         });
         if (!res.ok || !res.body) {
@@ -91,7 +175,7 @@ export function useChatSession(projectSlug: string | undefined) {
             if (!line.trim()) continue;
             const event = JSON.parse(line) as ChatEvent;
             if (event.type === "meta") {
-              updateMessage(assistantId, () => ({
+              update(() => ({
                 engine: event.engine,
                 model: event.model,
                 fallbackReason: event.fallbackReason,
@@ -99,15 +183,9 @@ export function useChatSession(projectSlug: string | undefined) {
                 ...(event.restart && { content: "", status: "waiting" as const }),
               }));
             } else if (event.type === "delta") {
-              updateMessage(assistantId, (message) => ({
-                content: message.content + event.text,
-                status: "streaming",
-              }));
+              update((message) => ({ content: message.content + event.text, status: "streaming" }));
             } else if (event.type === "done") {
-              updateMessage(assistantId, (message) => ({
-                status: "done",
-                totalMs: Date.now() - (message.startedAt ?? Date.now()),
-              }));
+              update((message) => ({ status: "done", totalMs: Date.now() - (message.startedAt ?? Date.now()) }));
             } else {
               fail(event.message);
             }
@@ -117,54 +195,93 @@ export function useChatSession(projectSlug: string | undefined) {
         // 중단 버튼이나 엔진 전환으로 멈춘 경우는 각각 따로 처리한다.
         if (!controller.signal.aborted) fail("연결이 끊겼습니다. 잠시 후 다시 시도해 주세요.");
       } finally {
-        if (abortRef.current === controller) {
-          abortRef.current = undefined;
-          pendingRef.current = undefined;
-        }
+        if (pendingRef.current.get(key) === pending) pendingRef.current.delete(key);
       }
     },
-    [projectSlug, updateMessage],
+    [updateMessage],
   );
 
   const send = useCallback(
-    (text: string) => {
+    (projectSlug: string | undefined, text: string) => {
       const question = text.trim().slice(0, MAX_MESSAGE_LENGTH);
       if (!question) return;
+      const key = threadKey(projectSlug);
+      const thread = threadsRef.current[key] ?? newThread(projectSlug);
       const user: UiMessage = { id: createId(), role: "user", content: question };
       const assistant: UiMessage = { id: createId(), role: "assistant", content: "", status: "waiting" };
-      const history = toHistory([...messages, user]);
-      setMessages((current) => [...current, user, assistant]);
-      void run(history, assistant.id, engine);
-    },
-    [engine, messages, run],
-  );
-
-  const stop = useCallback(() => {
-    const pending = pendingRef.current;
-    abortRef.current?.abort();
-    if (pending) updateMessage(pending.assistantId, () => ({ status: "stopped" }));
-  }, [updateMessage]);
-
-  // 답변 도중 바꾸면 지금 답변을 멈추고 같은 질문을 새 엔진으로 다시 요청한다.
-  const changeEngine = useCallback(
-    (next: EngineName) => {
-      setEngine(next);
-      const pending = pendingRef.current;
-      if (pending && next !== engine) void run(pending.history, pending.assistantId, next);
+      const history = toHistory([...thread.messages, user]);
+      const next = { ...thread, messages: [...thread.messages, user, assistant] };
+      threadsRef.current = { ...threadsRef.current, [key]: next };
+      setThreads((current) => ({ ...current, [key]: next }));
+      void run(key, history, assistant.id, engine);
     },
     [engine, run],
   );
 
-  const reset = useCallback(() => {
-    abortRef.current?.abort();
-    setMessages([]);
+  const stop = useCallback(
+    (key: string) => {
+      const pending = pendingRef.current.get(key);
+      if (!pending) return;
+      pending.controller.abort();
+      updateMessage(key, pending.assistantId, () => ({ status: "stopped" }));
+    },
+    [updateMessage],
+  );
+
+  // 답변 도중 바꾸면 지금 보고 있는 대화의 답변을 멈추고 같은 질문을 새 엔진으로 다시 요청한다.
+  const changeEngine = useCallback(
+    (next: EngineName, key: string) => {
+      setEngine(next);
+      const pending = pendingRef.current.get(key);
+      if (pending && next !== engine) void run(key, pending.history, pending.assistantId, next);
+    },
+    [engine, run],
+  );
+
+  // 새 대화: 대화창만 비운다. 지난 대화는 채팅 내역에서 다시 볼 수 있다.
+  const reset = useCallback((projectSlug: string | undefined) => {
+    const key = threadKey(projectSlug);
+    pendingRef.current.get(key)?.controller.abort();
+    pendingRef.current.delete(key);
+    setThreads((current) => ({ ...current, [key]: newThread(projectSlug) }));
   }, []);
 
-  useEffect(() => () => abortRef.current?.abort(), []);
+  // 채팅 내역에서 고른 대화를 그 프로젝트의 대화창으로 불러와 이어서 질문할 수 있게 한다.
+  const loadConversation = useCallback(
+    (conversation: { id: string; projectSlug: string | null; turns: HistoryTurn[] }) => {
+      const projectSlug = conversation.projectSlug ?? undefined;
+      const key = threadKey(projectSlug);
+      pendingRef.current.get(key)?.controller.abort();
+      pendingRef.current.delete(key);
+      const messages = conversation.turns.flatMap((turn): UiMessage[] => [
+        { id: createId(), role: "user", content: turn.question },
+        {
+          id: createId(),
+          role: "assistant",
+          content: turn.answer,
+          status: "done",
+          engine: turn.engine,
+          model: turn.model,
+          fallbackReason: null,
+          totalMs: turn.totalMs,
+        },
+      ]);
+      setThreads((current) => ({ ...current, [key]: { conversationId: conversation.id, projectSlug, messages } }));
+      return key;
+    },
+    [],
+  );
 
-  const busy = messages.some((message) => message.status === "waiting" || message.status === "streaming");
-  return { messages, engine, busy, send, stop, changeEngine, reset };
+  useEffect(() => {
+    const pending = pendingRef.current;
+    return () => pending.forEach(({ controller }) => controller.abort());
+  }, []);
+
+  return { threads, engine, send, stop, changeEngine, reset, loadConversation };
 }
+
+export const isBusy = (thread: Thread | undefined) =>
+  thread?.messages.some((message) => message.status === "waiting" || message.status === "streaming") ?? false;
 
 // 패널이 열려 있는 동안 로컬 LLM 상태를 주기적으로 확인한다. 답변이 끝나면(refreshKey 변경) 바로 다시 확인한다.
 export function useLlmStatus(active: boolean, refreshKey?: unknown) {

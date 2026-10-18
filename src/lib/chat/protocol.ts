@@ -12,6 +12,9 @@ export const chatRequestSchema = z.object({
     .string()
     .regex(/^[a-z0-9-]+$/)
     .optional(),
+  // 채팅 내역용. 브라우저마다 만든 방문자 ID와 대화 ID. 없으면 내역을 남기지 않는다.
+  visitorId: z.uuid().optional(),
+  conversationId: z.uuid().optional(),
   messages: z
     .array(
       z.object({
@@ -42,3 +45,24 @@ export type ChatEvent =
   | { type: "error"; message: string };
 
 export type LlmStatus = { online: boolean; busy: boolean; model: string };
+
+// 채팅 내역은 대화마다 마지막 질문 후 이 기간 동안 보관한다. 화면 안내 문구와 같은 값이다.
+export const HISTORY_TTL_DAYS = 7;
+
+export type HistoryTurn = {
+  question: string;
+  answer: string;
+  at: string;
+  engine: EngineName;
+  model: string;
+  totalMs: number;
+};
+
+export type HistoryConversation = {
+  id: string;
+  // 홈에서 연 "김지현" 대화는 null
+  projectSlug: string | null;
+  firstQuestion: string;
+  updatedAt: string;
+  turnCount: number;
+};

@@ -1,27 +1,19 @@
 "use client";
 
 import Image from "next/image";
-import { usePathname } from "next/navigation";
 import { useChat } from "./chat-provider";
 
 // 화면 오른쪽 가운데의 플로팅 버튼. 패널이 열려 있으면 숨긴다.
-// 프로젝트 상세 페이지에서는 그 프로젝트를 주제로, 그 밖의 페이지(홈)에서는 전체 프로젝트로 채팅을 연다.
+// 프로젝트 상세 페이지에서는 그 프로젝트의 대화를, 그 밖의 페이지(홈)에서는 "김지현" 대화를 연다.
 // 아바타를 크게 두고 무지개 테두리와 퍼지는 빛으로 눈에 띄게 한다(동작 줄이기 설정이면 빛은 끈다).
 export function ChatLauncher() {
-  const { open, openChat, clearProject, projects } = useChat();
-  const pathname = usePathname();
-  const pageSlug = pathname.match(/^\/projects\/([^/]+)$/)?.[1];
-  const pageProject = projects.find((project) => project.slug === pageSlug);
+  const { open, openChat, projects, pageProjectSlug } = useChat();
+  const pageProject = projects.find((project) => project.slug === pageProjectSlug);
   if (open) return null;
   return (
     <button
       type="button"
-      onClick={() => {
-        if (pageProject) return openChat(pageProject.slug);
-        // 앞서 상세 페이지에서 고른 프로젝트가 남지 않게 한다.
-        clearProject();
-        openChat();
-      }}
+      onClick={openChat}
       className="group fixed top-1/2 right-3 z-40 flex -translate-y-1/2 cursor-pointer flex-col items-center gap-2 sm:right-6"
     >
       <span className="relative">
@@ -43,7 +35,7 @@ export function ChatLauncher() {
         </span>
       </span>
       <span className="rounded-full bg-gradient-to-r from-violet-600 to-pink-500 px-4 py-1.5 text-sm font-bold whitespace-nowrap text-white shadow-lg shadow-violet-500/30 transition group-hover:brightness-110">
-        {pageProject ? `${pageProject.title}에 대해 물어보기` : "AI에게 물어보기"}
+        {pageProject ? `${pageProject.title}에 대해 물어보기` : "저에 대해 물어봐주세요"}
       </span>
     </button>
   );

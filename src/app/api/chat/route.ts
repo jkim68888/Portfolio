@@ -10,7 +10,7 @@ import {
 } from "@/lib/chat/local-engine";
 import { buildSystemPrompt } from "@/lib/chat/prompt";
 import { chatRequestSchema, type ChatEvent, type FallbackReason } from "@/lib/chat/protocol";
-import { checkRateLimit, saveChatLog, visitorId, type ChatLog } from "@/lib/chat/store";
+import { checkRateLimit, saveChatLog, saveHistoryTurn, visitorId, type ChatLog } from "@/lib/chat/store";
 import { getProfile } from "@/lib/profile";
 import { getChatProjects } from "@/lib/projects";
 
@@ -53,7 +53,25 @@ export async function POST(request: Request) {
   };
   let finish: () => void = () => {};
   const finished = new Promise<void>((resolve) => (finish = resolve));
-  after(() => finished.then(() => saveChatLog({ ...log, totalMs: Date.now() - startedAt })));
+  after(() =>
+    finished.then(async () => {
+      const totalMs = Date.now() - startedAt;
+      await saveChatLog({ ...log, totalMs });
+      // 끝까지 받은 답변만 채팅 내역에 남긴다(중단·오류는 다시 보여줄 내용이 없다).
+      const { visitorId: historyVisitor, conversationId } = parsed.data;
+      if (historyVisitor && conversationId && log.outcome === "done" && log.engine && log.model) {
+        await saveHistoryTurn(historyVisitor, conversationId, {
+          projectSlug: log.projectSlug,
+          question: log.question,
+          answer: log.answer,
+          at: log.at,
+          engine: log.engine,
+          model: log.model,
+          totalMs,
+        });
+      }
+    }),
+  );
 
   // 사용자가 채팅을 닫거나 중단하면 엔진 호출도 멈춘다.
   const abort = new AbortController();
