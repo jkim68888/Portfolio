@@ -88,7 +88,7 @@ export async function POST(request: Request) {
           send({ type: "meta", engine: "local", model: LOCAL_MODEL, fallbackReason: null });
           try {
             const focusSlugs = selectFocusSlugs(projects, messages, projectSlug);
-            const system = buildSystemPrompt(projects, { focusSlugs });
+            const system = buildSystemPrompt(projects, { focusSlugs, currentSlug: projectSlug });
             for await (const text of streamLocal({ system, messages, signal })) send({ type: "delta", text });
             send({ type: "done" });
             return;
@@ -108,7 +108,7 @@ export async function POST(request: Request) {
           ...(fallbackReason === "local_interrupted" && { restart: true as const }),
         });
         // 클라우드는 긴 내용도 빠르게 처리하므로 프로젝트 전체를 상세히 넣는다(프롬프트 캐싱 적용).
-        const system = buildSystemPrompt(projects);
+        const system = buildSystemPrompt(projects, { currentSlug: projectSlug });
         for await (const text of streamCloud({ system, messages, signal })) send({ type: "delta", text });
         send({ type: "done" });
       } catch (error) {

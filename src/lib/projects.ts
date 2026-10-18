@@ -12,7 +12,7 @@ export const CATEGORY_LABELS = {
   company: "회사 프로젝트",
   "swift-side": "Swift 사이드 프로젝트",
   "rn-side": "React Native 사이드 프로젝트",
-  "web-side": "웹 사이드 프로젝트",
+  "next-side": "Next.js 사이드 프로젝트",
 } as const;
 
 const projectSchema = z.object({
@@ -32,6 +32,8 @@ const projectSchema = z.object({
   // 서비스 종료·미출시처럼 링크가 없는 이유 등 현재 상태. 화면과 챗봇 모두 사용한다.
   status: z.string().default(""),
   notionId: z.string(),
+  // 챗봇이 홈에서 받은 질문으로 관련 프로젝트를 고를 때, 프로젝트명 외에 함께 찾을 말 (예: "이 사이트")
+  keywords: z.array(z.string()).default([]),
   // team·myRole은 상세 페이지와 챗봇에, interviewQA는 챗봇에만 쓴다.
   team: z.string(),
   myRole: z.string(),

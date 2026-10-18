@@ -1,5 +1,5 @@
 // 로컬 LLM에 상세 내용을 넣을 프로젝트를 고른다. 내용이 길면 첫 글자까지 수십 초가 걸리므로 1~2개로 줄인다.
-// 순서: ① 상세 페이지에서 연 채팅이면 그 프로젝트 ② 질문에 프로젝트명·회사명·기술명이 있으면 키워드 매칭 ③ 없으면 요약 목록만
+// 순서: ① 상세 페이지에서 연 채팅이면 그 프로젝트 ② 질문에 프로젝트명(별칭 keywords 포함)·회사명·기술명이 있으면 키워드 매칭 ③ 없으면 요약 목록만
 import type { ChatMessage } from "./protocol";
 import type { ProjectForPrompt } from "./prompt";
 
@@ -25,7 +25,9 @@ export function selectFocusSlugs(
     .map((message) => normalize(message.content));
 
   for (const question of questions) {
-    const byName = projects.filter((project) => question.includes(normalize(project.title)));
+    const byName = projects.filter((project) =>
+      [project.title, ...(project.keywords ?? [])].some((name) => question.includes(normalize(name))),
+    );
     const byCompany = projects.filter((project) => project.company && question.includes(normalize(project.company)));
     // React처럼 여러 프로젝트에 쓰인 기술은 고를 기준이 못 되므로, 2개 이하에만 해당하는 기술만 본다.
     const byStack = projects.filter((project) =>

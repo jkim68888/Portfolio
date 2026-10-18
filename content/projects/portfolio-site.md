@@ -2,7 +2,7 @@
 title: "포트폴리오 사이트"
 slug: "portfolio-site"
 order: 11
-category: "web-side"
+category: "next-side"
 company: ""
 period: "2026.10.15 ~"
 tagline: "AI 면접 챗봇이 있는 포트폴리오"
@@ -14,6 +14,8 @@ preview: "/projects/portfolio-site/home-mobile.png"
 links: []
 status: ""
 notionId: ""
+# 챗봇이 홈에서 받은 질문으로 이 프로젝트를 찾을 때 쓰는 별칭
+keywords: ["이 사이트", "이 포트폴리오", "포트폴리오 사이트", "챗봇", "로컬 LLM"]
 # team·myRole은 상세 페이지와 챗봇에, interviewQA는 챗봇에만 사용
 team: "1인 개발"
 myRole: "기획부터 디자인, 프론트엔드, 챗봇 서버, 내 Mac에 띄운 로컬 LLM 운영까지 혼자 진행. Claude Code를 개발 도구로 활용"

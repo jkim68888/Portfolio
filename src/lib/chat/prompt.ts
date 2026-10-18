@@ -16,19 +16,22 @@ export type ProjectForPrompt = Pick<
   | "team"
   | "myRole"
   | "interviewQA"
+  | "keywords"
   | "body"
 >;
 
 export type PromptOptions = {
   // 상세 내용을 넣을 프로젝트. 생략하면 전체 프로젝트를 상세히 넣는다(호스팅 API용).
   focusSlugs?: string[];
+  // 상세 페이지에서 연 채팅이면 그 프로젝트. "이 프로젝트"가 무엇인지 알려 준다.
+  currentSlug?: string;
 };
 
 const CATEGORY_NAMES: Record<string, string> = {
   company: "회사",
   "swift-side": "Swift 사이드",
   "rn-side": "React Native 사이드",
-  "web-side": "웹 사이드",
+  "next-side": "Next.js 사이드",
 };
 
 // 정해진 문장으로 답해야 하는 경우. 작은 모델이 문장을 바꾸지 않도록 그대로 인용하게 한다.
@@ -43,7 +46,8 @@ const RULES = `당신은 프론트엔드 개발자 김지현 본인입니다. �
 - 답변은 최대 5문장, 400자 이내로 짧게 합니다. 목록은 꼭 필요할 때만 4개 항목 이내로 쓰고, 코드 블록은 쓰지 않습니다.
 - <portfolio> 안의 내용만 근거로 답합니다. 기술명·수치·회사명은 자료에 적힌 그대로 씁니다. "예상 질문과 답변"이 있으면 그 내용을 우선합니다.
 - 자료에 없는 일(예: 코드 리뷰, 테스트, 성능 최적화)을 일반론으로 덧붙이지 않습니다.
-- React와 React Native는 서로 다른 기술로 구분합니다. 프로젝트 목록의 기술 스택을 확인해서 답합니다.
+- 기술을 고른 이유, 아쉬운 점, 느낀 점도 자료에 적힌 것만 말합니다. 그럴듯한 이유를 만들어 내지 않습니다.
+- React와 React Native는 서로 다른 기술로 구분합니다. 프로젝트 목록의 기술 스택을 확인해서 답합니다. 기술 스택에 "React Native"만 있는 프로젝트는 React 프로젝트가 아닙니다.
 - 자료에 없는 내용을 물으면 추측하지 말고 정확히 이렇게만 답합니다: "${UNKNOWN_ANSWER}"
 - 연봉·처우·입사 가능일 같은 질문에는 숫자나 조건을 절대 말하지 말고 정확히 이렇게만 답합니다: "${COMPENSATION_ANSWER}"
 - 사생활, 일반 상식, 코드 작성 부탁처럼 포트폴리오와 관계없는 질문은 정중히 사양하고 프로젝트에 대해 물어봐 달라고 안내합니다.
@@ -80,9 +84,10 @@ function formatDetail(project: ProjectForPrompt) {
   ].join("\n");
 }
 
-export function buildSystemPrompt(projects: ProjectForPrompt[], { focusSlugs }: PromptOptions = {}) {
+export function buildSystemPrompt(projects: ProjectForPrompt[], { focusSlugs, currentSlug }: PromptOptions = {}) {
   const detailed = focusSlugs ? projects.filter((project) => focusSlugs.includes(project.slug)) : projects;
   const omitted = projects.length - detailed.length;
+  const current = projects.find((project) => project.slug === currentSlug);
   const omittedNote =
     detailed.length === 0
       ? "모든 프로젝트는 위 목록의 요약만 제공됩니다."
@@ -100,6 +105,12 @@ export function buildSystemPrompt(projects: ProjectForPrompt[], { focusSlugs }: 
       ? ["", `(${omittedNote} 자세한 질문에는 해당 프로젝트 상세 페이지에서 다시 물어봐 달라고 안내합니다.)`]
       : []),
     "</portfolio>",
+    ...(current
+      ? [
+          "",
+          `면접관은 지금 "${current.title}" 상세 페이지에서 질문하고 있습니다. "이 프로젝트", "여기서"처럼 프로젝트를 밝히지 않은 질문은 ${current.title}에 대한 질문으로 보고 답합니다.`,
+        ]
+      : []),
     "",
     REMINDER,
   ].join("\n");

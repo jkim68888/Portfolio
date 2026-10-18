@@ -3,7 +3,7 @@ import Link from "next/link";
 import { TagList } from "@/components/tag-list";
 import type { Project } from "@/lib/projects";
 
-const SIDE_LABELS: Record<string, string> = { "swift-side": "Swift", "rn-side": "React Native", "web-side": "웹" };
+const SIDE_LABELS: Record<string, string> = { "swift-side": "Swift", "rn-side": "React Native", "next-side": "Next.js" };
 
 // 한 줄에 하나씩 가로로 긴 카드. 왼쪽은 설명, 오른쪽은 대표 화면 하나를 작게 보여준다.
 export function ProjectCard({ project }: { project: Project }) {
