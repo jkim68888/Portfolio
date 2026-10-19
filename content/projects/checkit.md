@@ -22,9 +22,9 @@ interviewQA:
   - question: "TypeScript 타입은 어떤 기준으로 설계했나요?"
     answer: "초기에는 모든 Props를 type Props = {...}로 선언해서 어떤 컴포넌트의 타입인지, 재사용하는 타입인지 구분이 모호했습니다. 그래서 컴포넌트 Props는 PrioritySelectBoxProps처럼 컴포넌트 이름을 붙인 interface로 선언하고, 여러 곳에서 쓰는 공통 타입만 type으로 별도 파일에 분리했습니다. 확장이 필요한 부분은 유틸리티 타입을 활용했습니다."
   - question: "Expo를 선택한 이유는 무엇이고, 쓰면서 아쉬웠던 점은 무엇인가요?"
-    answer: ""
-  - question: "Android 비공개 테스트를 진행하면서 겪은 점은 무엇인가요?"
-    answer: ""
+    answer: "혼자서 iOS와 Android를 모두 출시해야 해서, 네이티브 빌드 환경을 직접 다루는 부담을 줄이려고 Expo를 선택했습니다. 특히 EAS Build는 클라우드에서 빌드해 주고 iOS 인증서와 프로비저닝 프로파일도 자동으로 관리해 줘서 배포가 편했고, eas.json으로 dev, preview, production 채널을 나눠 환경별로 빌드할 수 있었습니다. 아쉬웠던 점은 무료 플랜이라 빌드 대기 큐가 생겨서 빌드 하나에 오래 기다려야 했던 것입니다."
+  - question: "React Native로 iOS와 Android를 함께 개발하면서, 플랫폼 차이는 어떻게 대응했나요?"
+    answer: "한 코드로 개발해도 iOS에서는 문제없던 화면이 Android에서는 다르게 보이는 경우가 있어서, Platform.select로 플랫폼별 스타일을 나누거나 속성을 추가해 대응했습니다. 주의사항 안내 모달은 배경 딤이 상태바 영역까지 덮지 않아 statusBarTranslucent를 켰고, 모달 크기도 iOS는 화면 비율 기준, Android는 고정 크기로 나눴으며, 그림자는 Android용 elevation으로 따로 줬습니다. 모서리를 둥글게 한 중요도 버튼은 안쪽 요소가 모서리 밖으로 보이지 않도록 overflow: hidden을 추가했습니다. 또 Android에서는 상태바가 화면 위에 겹쳐 콘텐츠를 가려서, 화면을 SafeAreaView로 감싸고 상태바 배경색을 앱 배경색에 맞췄습니다. 한 번 만든 코드로 두 플랫폼을 지원하더라도, 플랫폼별로 실제 기기에서 확인하는 과정이 꼭 필요하다는 걸 느꼈습니다."
 ---
 
 ### 📱 Todo 앱
