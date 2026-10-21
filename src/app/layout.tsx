@@ -50,8 +50,9 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
           <div id="main" className="flex-1">
             {children}
           </div>
-          <SiteFooter />
+          {/* 푸터 위에서 멈추도록 푸터 바로 앞에 둔다. */}
           <ChatLauncher />
+          <SiteFooter />
           <ChatPanel />
         </ChatProvider>
       </body>
