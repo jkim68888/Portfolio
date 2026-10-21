@@ -5,6 +5,7 @@ import { ChatPanel } from "@/components/chat/chat-panel";
 import { ChatProvider } from "@/components/chat/chat-provider";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { VisitTracker } from "@/components/visit-tracker";
 import { getProjects } from "@/lib/projects";
 // 한글 전체가 든 가변 글꼴(2MB)을 통째로 받으면 모바일 첫 화면이 크게 늦어진다.
 // 글자 범위별로 나뉜 파일을 쓰면 브라우저가 페이지에 쓰인 글자 범위만 받는다.
@@ -45,6 +46,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
         >
           본문으로 건너뛰기
         </a>
+        <VisitTracker />
         <ChatProvider projects={chatProjects}>
           <SiteHeader />
           <div id="main" className="flex-1">

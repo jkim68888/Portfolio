@@ -14,6 +14,7 @@
     "og:build": "node scripts/build-og-image.mjs",
     "llm:proxy": "node --env-file-if-exists=local-llm/.env local-llm/proxy.mjs",
     "chat:logs": "node --env-file-if-exists=.env.local scripts/chat-logs.mjs",
+    "visit:logs": "node --env-file-if-exists=.env.local scripts/visit-logs.mjs",
     "chat:eval": "node --env-file-if-exists=.env.local --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/chat-eval.mjs"
   },
   "dependencies": {
