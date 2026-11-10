@@ -15,7 +15,7 @@ strengths:
 careers:
   - company: "(주)이노스피치"
     role: "프론트엔드 개발자"
-    period: "2025.12 ~ 2026.10"
+    period: "2025.12 ~ 재직중"
     projects: ["modoo-ipsi-ai"]
   - company: "(주)인벤"
     role: "iOS 개발자"

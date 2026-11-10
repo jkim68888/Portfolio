@@ -4,7 +4,7 @@ slug: "modoo-ipsi-ai"
 order: 1
 category: "company"
 company: "(주)이노스피치"
-period: "2025.12 ~ 2026.10"
+period: "2025.12 ~ 재직중"
 tagline: "AI 모의면접 웹 서비스"
 summary: "생기부 기반 AI 모의면접, 생기부 분석, 학교/학과 탐색 등의 기능을 통해 대학입시 준비를 할 수 있는 웹 플랫폼"
 stack: ["React", "TypeScript", "Vite", "Zustand", "Tailwind"]
